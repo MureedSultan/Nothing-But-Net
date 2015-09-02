@@ -269,7 +269,7 @@ task LCD_Display {
 					displayLCDString(0, 3, "Auton     ");
 					Competition.Status = 1;
 					} else {
-					displayLCDString(0, 3, "Driver    ");
+					displayLCDString(0, 3, "Hi KOLBY    ");
 					Competition.Status = 2;
 				}
 			}
