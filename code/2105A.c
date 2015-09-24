@@ -1,7 +1,7 @@
 #pragma config(UART_Usage, UART1, uartVEXLCD, baudRate19200, IOPins, None, None)
 #pragma config(UART_Usage, UART2, uartNotUsed, baudRate4800, IOPins, None, None)
 #pragma config(I2C_Usage, I2C1, i2cSensors)
-#pragma config(Sensor, in1,    PowerExpander,  sensorNone)
+#pragma config(Sensor, in1,    PowerExpander,  sensorAnalog)
 #pragma config(Sensor, dgtl1,  Brake1,         sensorDigitalOut)
 #pragma config(Sensor, dgtl2,  Brake2,         sensorDigitalOut)
 #pragma config(Sensor, I2C_1,  encoder_left,   sensorQuadEncoderOnI2CPort,    , AutoAssign)

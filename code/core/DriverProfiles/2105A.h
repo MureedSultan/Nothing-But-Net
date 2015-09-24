@@ -18,8 +18,8 @@ task usercontrol {
 			slaveMotor(RightB, RightA);
 			slaveMotor(LeftB, LeftA);
 			//*/
-			motor[LeftA] = 120;
-			motor[RightA] = 120;
+			motor[LeftA] = 113;
+			motor[RightA] = 113;
 			/*
 			motor[LeftA] = 127;
 			motor[LeftB] = 127;
