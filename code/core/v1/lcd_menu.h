@@ -26,7 +26,7 @@ const char LCD_SizeOfMenu = 5; // MUST be at least 1 to prevent crash
 
 typedef struct {
 	bool IsBlue;
-	bool AtLoader;
+	bool Right;
 	bool Set;
 	char Auton;
 	byte Status; // status is supposed to be updated by lcd_display?
@@ -62,11 +62,11 @@ void LCD_Menu_Define()
 	LCD.Menu[2].SelectIndex = 3;
 
 	LCD.Menu[3].Title = "Start Point";
-	LCD.Menu[3].Text = "Autoloader";
+	LCD.Menu[3].Text = "Right";
 	LCD.Menu[3].PrevIndex = 3;
 
 	LCD.Menu[4].Title = "Start Point";
-	LCD.Menu[4].Text = "Freedom";
+	LCD.Menu[4].Text = "Left";
 	LCD.Menu[4].NextIndex = 4;
 }
 
@@ -87,15 +87,15 @@ bool LCD_Menu_Execute()
 #endif
 		break;
 	case 3:
-		Competition.AtLoader = true;
+		Competition.Right = true;
 #if defined(_DEBUG)
-		writeDebugStreamLine("Set as autoloader");
+		writeDebugStreamLine("Set as Right");
 #endif
 		break;
 	case 4:
-		Competition.AtLoader = false;
+		Competition.Right = false;
 #if defined(_DEBUG)
-		writeDebugStreamLine("Set as freedom spot");
+		writeDebugStreamLine("Set as Left");
 #endif
 		break;
 	/*case 4:

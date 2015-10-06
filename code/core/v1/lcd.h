@@ -256,7 +256,7 @@ task LCD_Display {
 				} else {
 				displayLCDString(0,0,"R");
 			}
-			if(Competition.AtLoader) {
+			if(Competition.Right) {
 				displayLCDString(0,1,"A");
 				} else {
 				displayLCDString(0,1,"F");

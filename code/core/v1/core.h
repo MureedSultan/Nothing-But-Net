@@ -232,9 +232,9 @@ void Auton_Drive_Targeted_PID(tDirection Direction, int Distance, tSpeed MaxSpee
 #if defined(_DEBUG)
 	writeDebugStreamLine("Multiplier is %i", -Auton_GetMultiplier(Direction,DriveRearRight));
 #endif
-		//writeDebugStreamLine("START-DISTANCE=%i",Distance);
+	//writeDebugStreamLine("START-DISTANCE=%i",Distance);
 	while((nSysTime - StartTime) < Timeout) {
-	//writeDebugStreamLine("Sensor=%i",SensorValue[PID_Drive.Sensor]);
+		//writeDebugStreamLine("Sensor=%i",SensorValue[PID_Drive.Sensor]);
 		Error = SensorValue[PID_Drive.Sensor] - (-Auton_GetMultiplier(Direction,DriveRearRight)) * Distance;
 		//writeDebugStreamLine("Target=%i",(-Auton_GetMultiplier(Direction,DriveRearRight)) * Distance);
 		//writeDebugStreamLine("Error=%i",Error);
@@ -362,7 +362,7 @@ void pre_auton() {
 		displayLCDCenteredString(1, "9V not connected");
 	}
 	selftest("9V voltage: ");
-	while(((float)BackupBatteryLevel / (float)1000) < 8.7 && nLCDButtons == 0 && bIfiRobotDisabled) {
+	while(((float)BackupBatteryLevel / (float)1000) < 8.0 && nLCDButtons == 0 && bIfiRobotDisabled) {
 		displayLCDCenteredString(0, "POST ERROR");
 		displayLCDCenteredString(1, "9V battery low");
 	}
@@ -372,7 +372,7 @@ void pre_auton() {
 		displayLCDCenteredString(1, "No Cortex power");
 	}
 	selftest("Cortex voltage: ");
-	while(((float)nImmediateBatteryLevel / (float)1000) < 8.5 && nLCDButtons == 0 && bIfiRobotDisabled) {
+	while(((float)nImmediateBatteryLevel / (float)1000) < 8.35 && nLCDButtons == 0 && bIfiRobotDisabled) {
 		displayLCDCenteredString(0, "POST ERROR");
 		displayLCDCenteredString(1, "Cortex batt low");
 	}
@@ -383,7 +383,7 @@ void pre_auton() {
 		displayLCDCenteredString(1, "No batt B power");
 	}
 	selftest("Power expander voltage: ");
-	while(((float)SensorValue[PowerExpander] / (float)280) < 8.5 && nLCDButtons == 0 && bIfiRobotDisabled) {
+	while(((float)SensorValue[PowerExpander] / (float)280) < 8.35 && nLCDButtons == 0 && bIfiRobotDisabled) {
 		displayLCDCenteredString(0, "POST ERROR");
 		displayLCDCenteredString(1, "Battery B low");
 	}
@@ -479,24 +479,29 @@ void pre_auton() {
 #endif
 }
 
-void Auton_Lift(tVertical Direction = VSTOP, tSpeed Speed = 127, int Time = 0) {
-	if(Lift_TrippedMax() && Direction == UP) {
-		Auton_Lift();
-		return;
-	}
-	if(Lift_TrippedMin() && Direction == DOWN) {
-		Auton_Lift();
-		return;
-	}
-	motor[LiftLeftA] = Direction * Speed;
-	motor[LiftLeftB] = Direction * Speed;
-	motor[LiftLeftC] = Direction * Speed;
-	motor[LiftRightA] = Direction * Speed;
-	motor[LiftRightB] = Direction * Speed;
-	motor[LiftRightC] = Direction * Speed;
+void Auton_Collect(tSpeed Speed = 127, int Time = 0) {
+	motor[CollectA] =  Speed;
+	motor[CollectB] =  Speed;
 	if (Time > 0) {
 		sleep(Time);
-		Auton_Lift();
+		Auton_Collect();
+	}
+}
+
+void Auton_Launch(tSpeed Speed = 127, int Time = 0) {
+	nMotorPIDSpeedCtrl[LeftA] = mtrSpeedReg;
+	nMotorPIDSpeedCtrl[RightA] = mtrSpeedReg;
+	nMotorPIDSpeedCtrl[LeftB] = mtrSpeedReg;
+	nMotorPIDSpeedCtrl[RightB] = mtrSpeedReg;
+	slaveMotor(RightB, RightA);
+	slaveMotor(LeftB, LeftA);
+
+	motor[LeftA] = Speed;
+	motor[RightA] = Speed;
+
+	if (Time > 0) {
+		sleep(Time);
+		Auton_Launch();
 	}
 }
 
@@ -510,31 +515,31 @@ void Auton_Lift_Targeted(tVertical Direction, int NewPosition = 0, tSpeed Speed 
 #if defined(_DEBUG)
 		writeDebugStreamLine("Running down to 0 at speed %i", Speed);
 #endif
-		Auton_Lift(DOWN, Speed);
+		//Auton_Lift(DOWN, Speed);
 		while(!Lift_TrippedMin() && vexRT[Btn6U] != 1 && vexRT[Btn6D] != 1 && (nSysTime - StartTime) < Timeout) {
-			Auton_Lift(DOWN, Speed);
+			//Auton_Lift(DOWN, Speed);
 		}
 #if defined(_DEBUG)
 		writeDebugStreamLine("Stopping lift");
 #endif
-		Auton_Lift();
+		//Auton_Lift();
 #if defined(_DEBUG)
 		writeDebugStreamLine("Done");
 #endif
 		return;
 	}
-	Auton_Lift(Direction, Speed);
+	//Auton_Lift(Direction, Speed);
 	if(Direction == UP) {
 #if defined(_DEBUG)
 		writeDebugStreamLine("Running UP");
 #endif
 		while(-SensorValue[LiftEncoder] < NewPosition && !Lift_TrippedMax() && vexRT[Btn6U] != 1 && vexRT[Btn6D] != 1 && (nSysTime - StartTime) < Timeout) {
-			Auton_Lift(Direction, Speed);
+			//Auton_Lift(Direction, Speed);
 		}
 #if defined(_DEBUG)
 		writeDebugStreamLine("Stopping lift");
 #endif
-		Auton_Lift();
+		//Auton_Lift();
 #if defined(_DEBUG)
 		writeDebugStreamLine("Done");
 #endif
@@ -543,12 +548,12 @@ void Auton_Lift_Targeted(tVertical Direction, int NewPosition = 0, tSpeed Speed 
 		writeDebugStreamLine("Running DOWN");
 #endif
 		while(-SensorValue[LiftEncoder] > NewPosition && !Lift_TrippedMin() && vexRT[Btn6U] != 1 && vexRT[Btn6D] != 1 && (nSysTime - StartTime) < Timeout) {
-			Auton_Lift(Direction, Speed);
+			//Auton_Lift(Direction, Speed);
 		}
 #if defined(_DEBUG)
 		writeDebugStreamLine("Stopping lift");
 #endif
-		Auton_Lift();
+		//Auton_Lift();
 #if defined(_DEBUG)
 		writeDebugStreamLine("Done");
 		if(!((nSysTime - StartTime) < Timeout)) {

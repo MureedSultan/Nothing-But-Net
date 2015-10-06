@@ -1,16 +1,31 @@
 task autonomous {
 	if(Competition.Auton == 3) {
-	Auton_Progskills();
-	AutonDataDump();
-	stopTask(autonomous);
+		Auton_Progskills();
+		AutonDataDump();
+		stopTask(autonomous);
 	}
 	switch(Competition.IsBlue) {
 	case true:
-		Auton_Blue_AtLoader();
+		switch(Competition.Right) {
+		case true:
+			Auton_Blue_Right();
+			break;
+		case false:
+			Auton_Blue_Left();
+			break;
+		}
 		break;
 	case false:
-		Auton_Red_AtLoader();
+		switch(Competition.Right) {
+		case true:
+			Auton_Red_Right();
+			break;
+		case false:
+			Auton_Red_Left();
+			break;
+		}
 		break;
 	}
+	allMotorsOff();
 	AutonDataDump();
 }

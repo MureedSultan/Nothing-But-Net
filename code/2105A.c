@@ -4,6 +4,7 @@
 #pragma config(Sensor, in1,    PowerExpander,  sensorAnalog)
 #pragma config(Sensor, dgtl1,  Brake1,         sensorDigitalOut)
 #pragma config(Sensor, dgtl2,  Brake2,         sensorDigitalOut)
+#pragma config(Sensor, dgtl3,  collection_encoder, sensorQuadEncoder)
 #pragma config(Sensor, I2C_1,  encoder_left,   sensorQuadEncoderOnI2CPort,    , AutoAssign)
 #pragma config(Sensor, I2C_2,  encoder_right,  sensorQuadEncoderOnI2CPort,    , AutoAssign)
 #pragma config(Sensor, I2C_3,  ,               sensorQuadEncoderOnI2CPort,    , AutoAssign)
@@ -22,6 +23,8 @@
 
 // TO CHANGE LCD THING, GO TO LCD FILE LINE: 272
 #define NoLiftLimits
+#define NoDriveEncoder
+#define OneLiftEncoder
 //#define NoPowerExpander
 //#define MultiDriveEncoders.
 #if defined(_DEBUG)
@@ -29,15 +32,24 @@ const string FILE = __FILE__;
 #endif
 
 #include "core/v1/core.h"
-#include "core/misc/2105.func.h"
+//#include "core/misc/2105.func.h"
 #include "core/DriverProfiles/2105A.h"
-//#include "core/misc/2105A-autonmanager.h"
+#include "core/auton/2105A-blue-left.h"
+#include "core/auton/2105A-blue-right.h"
+#include "core/auton/2105A-red-left.h"
+#include "core/auton/2105A-red-right.h"
+#include "core/auton/2105A-Progskills.h"
+#include "core/misc/2105A-autonmanager.h"
 
 void ResetDriveEncoders() {
-	 nMotorEncoder[LeftA] = 0;
-   nMotorEncoder[RightA] = 0;
-   nMotorEncoder[LeftB] = 0;
-   nMotorEncoder[RightB] = 0;
+	nMotorEncoder[LeftA] = 0;
+	nMotorEncoder[RightA] = 0;
+	nMotorEncoder[LeftB] = 0;
+	nMotorEncoder[RightB] = 0;
+	SensorValue[collection_encoder] = 0;
+	SensorValue[Brake1] = 0;
+	SensorValue[Brake2] = 0;
+
 }
 
 void init() {
