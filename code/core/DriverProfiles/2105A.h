@@ -12,8 +12,8 @@ task usercontrol {
 			nMotorPIDSpeedCtrl[RightB] = mtrSpeedReg;
 			slaveMotor(RightB, RightA);
 			slaveMotor(LeftB, LeftA);
-			motor[LeftA] = 111;
-			motor[RightA] = 111;
+			motor[LeftA] = 113;
+			motor[RightA] = 113;
 			}else if(vexRT[Btn7R] == 1){
 			motor[LeftA] = 0;
 			motor[LeftB] = 0;
@@ -25,10 +25,10 @@ task usercontrol {
 			motor[RightA] = 98;
 			motor[RightB] = 98;
 			}else if(vexRT[Btn7U] == 1){
-			motor[LeftA] = 88;
-			motor[LeftB] = 88;
-			motor[RightA] = 88;
-			motor[RightB] = 88;
+			motor[LeftA] = 84;
+			motor[LeftB] = 84;
+			motor[RightA] = 84;
+			motor[RightB] = 84;
 		}
 		if(vexRT[Btn5U] == 1){
 			motor[CollectB] =  127;
