@@ -38,7 +38,7 @@ const string FILE = __FILE__;
 #include "core/auton/2105A-blue-right.h"
 #include "core/auton/2105A-red-left.h"
 #include "core/auton/2105A-red-right.h"
-#include "core/auton/2105A-Progskills.h"
+//#include "core/auton/2105A-Progskills.h"
 #include "core/misc/2105A-autonmanager.h"
 
 void ResetDriveEncoders() {

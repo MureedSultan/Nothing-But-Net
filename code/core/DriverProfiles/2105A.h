@@ -51,5 +51,8 @@ task usercontrol {
 			SensorValue[Brake1] = 0;
 			SensorValue[Brake2] = 0;
 		}
+		if(vexRT[Btn8L] == 1){
+			playTone(440, 50);
+		}
 	}
 }
