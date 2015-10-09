@@ -322,7 +322,7 @@ void pre_auton() {
 #endif
 	writeDebugStreamLine(" - Backup   %1.2fv", (float)BackupBatteryLevel / (float)1000);
 #endif
-	bPlaySounds = false;
+	//bPlaySounds = false;
 #ifndef NoLCD
 	LCD.Display.BattA = true;
 #ifndef NoPowerExpander
@@ -493,11 +493,11 @@ void Auton_Launch(tSpeed Speed = 127, int Time = 0) {
 	nMotorPIDSpeedCtrl[RightA] = mtrSpeedReg;
 	nMotorPIDSpeedCtrl[LeftB] = mtrSpeedReg;
 	nMotorPIDSpeedCtrl[RightB] = mtrSpeedReg;
-	slaveMotor(RightB, RightA);
-	slaveMotor(LeftB, LeftA);
+	slaveMotor(RightA, RightB);
+	slaveMotor(LeftA, LeftB);
 
-	motor[LeftA] = Speed;
-	motor[RightA] = Speed;
+	motor[LeftB] = Speed;
+	motor[RightB] = Speed;
 
 	if (Time > 0) {
 		sleep(Time);

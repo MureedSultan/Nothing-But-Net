@@ -33,6 +33,22 @@ const string FILE = __FILE__;
 
 #include "core/v1/core.h"
 //#include "core/misc/2105.func.h"
+
+void autonFunc(){
+	while(true){
+		SensorValue[Brake1] = 1;
+		SensorValue[Brake2] = 1;
+		Auton_Launch(110);
+		sleep(2900);
+		playSound(soundBeepBeep);
+		sleep(1500);
+		while(true){
+			playSound(soundFastUpwardTones);
+			wait1Msec(1750);
+		}
+	}
+}
+
 #include "core/DriverProfiles/2105A.h"
 #include "core/auton/2105A-blue-left.h"
 #include "core/auton/2105A-blue-right.h"
