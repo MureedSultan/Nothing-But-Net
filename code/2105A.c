@@ -35,20 +35,43 @@ const string FILE = __FILE__;
 //#include "core/misc/2105.func.h"
 
 void autonFunc(){
-	while(true){
+	clearTimer(T1);
+	while(time1[T1] <= 15){
 		SensorValue[Brake1] = 1;
 		SensorValue[Brake2] = 1;
-		Auton_Launch(110);
-		sleep(2900);
-		playSound(soundBeepBeep);
-		sleep(1500);
-		while(true){
-			playSound(soundFastUpwardTones);
-			wait1Msec(1750);
+		Auton_Launch(127);
+		sleep(3000);
+		int count = 0;
+		SensorValue[collection_encoder] = 0;
+		while(count < 4){
+			if(count < 1){
+				Auton_Launch(127);
+			}else{
+				Auton_Launch(108);
+			}
+			SensorValue[collection_encoder] = 0;
+			while(SensorValue[collection_encoder] < 660){
+				Auton_Collect(127);
+			}
+			Auton_Collect(0, 650);
+			SensorValue[collection_encoder] = 0;
+			if(count <= 4){
+				while(SensorValue(collection_encoder) <= 210){
+					Auton_Collect(127);
+				}
+			}
+			count++;
 		}
+		allMotorsOff();
+	}
+	allMotorsOff();
+}
+task launchSound(){
+	while(true){
+		playSound(soundFastUpwardTones);
+		wait1Msec(1750);
 	}
 }
-
 #include "core/DriverProfiles/2105A.h"
 #include "core/auton/2105A-blue-left.h"
 #include "core/auton/2105A-blue-right.h"
