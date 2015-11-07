@@ -8,20 +8,24 @@ task autonomous {
 	case true:
 		switch(Competition.Right) {
 		case true:
-			Auton_Blue_Right();
+			//Auton_Blue_Right();
+			autonFunc();
 			break;
 		case false:
-			Auton_Blue_Left();
+			//Auton_Blue_Left();
+			autonFunc();
 			break;
 		}
 		break;
 	case false:
 		switch(Competition.Right) {
 		case true:
-			Auton_Red_Right();
+			//Auton_Red_Right();
+			autonFunc();
 			break;
 		case false:
-			Auton_Red_Left();
+			//Auton_Red_Left();
+		autonFunc();
 			break;
 		}
 		break;
