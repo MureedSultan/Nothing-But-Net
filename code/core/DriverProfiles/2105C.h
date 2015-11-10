@@ -10,8 +10,8 @@ task usercontrol {
 		motor[DriveFrontLeft] = vexRT[Ch4] + vexRT[Ch2] + vexRT[Ch1];
 		motor[DriveRearLeft] =  vexRT[Ch4] + vexRT[Ch2] - vexRT[Ch1];
 		*/
-		motor[DriveLeft] =  vexRT[Ch4] - vexRT[Ch2] ;
-		motor[DriveRight] = -vexRT[Ch4] - vexRT[Ch2];
+		motor[DriveLeft] =  -vexRT[Ch4] + vexRT[Ch3] ;
+		motor[DriveRight] = vexRT[Ch4] + vexRT[Ch3];
 		//----------------------
 		//			Launcher
 		//----------------------
@@ -32,7 +32,7 @@ task usercontrol {
 			motor[LRM] = motorSpeed;
 			motor[LRB] = motorSpeed;
 			}else if(vexRT[Btn7L] == 1){
-			motorSpeed = 80;
+			motorSpeed = 74;
 			motor[LLT] = motorSpeed;
 			motor[LLM] = motorSpeed;
 			motor[LLB] = motorSpeed;
@@ -40,7 +40,7 @@ task usercontrol {
 			motor[LRM] = motorSpeed;
 			motor[LRB] = motorSpeed;
 			}else if(vexRT[Btn7U] == 1){
-			motorSpeed = 66;
+			motorSpeed = 64;
 			motor[LLT] = motorSpeed;
 			motor[LLM] = motorSpeed;
 			motor[LLB] = motorSpeed;
@@ -98,12 +98,16 @@ task usercontrol {
 		//----------------------
 		if(vexRT[Btn6U] == 1){
 			motor[CollectionA] =  127;
-			motor[CollectionB] =  127;
 			}else if(vexRT[Btn6D] == 1){
 			motor[CollectionA] =  -127;
-			motor[CollectionB] =  -127;
 			}else{
 			motor[CollectionA] =  0;
+		}
+		if(vexRT[Btn5U] == 1){
+			motor[CollectionB] =  127;
+			}else if(vexRT[Btn5D] == 1){
+			motor[CollectionB] =  -127;
+			}else{
 			motor[CollectionB] =  0;
 		}
 		//----------------------

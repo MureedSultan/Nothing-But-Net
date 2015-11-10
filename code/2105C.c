@@ -27,7 +27,7 @@ const string FILE = __FILE__;
 int motorSpeed;
 char Robot = 'B';
 #include "core/v1/core.h"
-#include "core/DriverProfiles/2105B.h"
+#include "core/DriverProfiles/2105C.h"
 #include "core/auton/2105B-all.h"
 #include "core/misc/2105A-autonmanager.h"
 
