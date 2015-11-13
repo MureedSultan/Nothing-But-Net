@@ -34,6 +34,7 @@ const string FILE = __FILE__;
 char Robot = 'A';
 int motorSpeed;
 #include "core/perRobot/2105A.h"
+#include "core/v1/pid/a.h"
 #include "core/v1/core.h"
 #include "core/DriverProfiles/2105A.h"
 #include "core/auton/2105A-all.h"

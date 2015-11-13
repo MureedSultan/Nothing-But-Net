@@ -64,7 +64,7 @@ void ResetLiftEncoders();
 bool Lift_TrippedMax();
 bool Lift_TrippedMin();
 
-tSensors DriveEncoder, LiftEncoder, LiftLimitMinA, LiftLimitMinB;
+tSensors DriveEncoder, LiftEncoder, LiftLimitMinA, LiftLimitMinB, encoder;
 tMotor LiftLeftA, LiftLeftB, LiftLeftC, LiftRightA, LiftRightB, LiftRightC;
 tMotor Launcher1, Launcher2, Launcher3, Launcher4, Launcher5, Launcher6;
 tPID PID_Drive, PID_Drive_TurnTo;
@@ -512,6 +512,10 @@ void Auton_Collect(tSpeed Speed = 127, int Time = 0) {
 	}
 }
 
+void Auton_DefineSensors(tSensors sen1){
+	encoder = sen1;
+}
+
 void Auton_DefineLauncher(tMotor m1, tMotor m2, tMotor m3, tMotor m4, tMotor m5, tMotor m6){
 	Launcher1 = m1;
 	Launcher2 = m2;
@@ -552,12 +556,7 @@ void Auton_Launch(tSpeed Speed = 127, int Time = 0) {
 		9 | LRM
 		10 | LRB
 		------------------ PSUDO ------------------ */
-		motor[port1] = Speed;
-		motor[port2] = Speed;
-		motor[port3] = Speed;
-		motor[port8] = Speed;
-		motor[port9] = Speed;
-		motor[port10] = Speed;
+		FwVelocitySet( &flywheel, 2480, 0.9);
 		break;
 	case 'C':
 
@@ -586,10 +585,10 @@ void Auton_Throw(tSpeed Speed = 127, int Time = 0, int count){
 		int c = 0;
 		while(c < count){
 			if(c > 0 && c <= 1){
-				Auton_Collect(0, 500);
+				Auton_Collect(0, 800);
 			}
-			Auton_Collect(127, 500);
-			Auton_Collect(0, 500);
+			Auton_Collect(127, 550);
+			Auton_Collect(0, 1000);
 			c++;
 		}
 		break;

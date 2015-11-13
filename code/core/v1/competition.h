@@ -14,11 +14,11 @@ const string RobotDisabled = "Robot disabled";
 
 task main() {
 #if defined(_DEBUG)
-			writeDebugStreamLine("Preauton start");
+	writeDebugStreamLine("Preauton start");
 #endif
 	pre_auton();
 #if defined(_DEBUG)
-			writeDebugStreamLine("Preauton end");
+	writeDebugStreamLine("Preauton end");
 #endif
 	while (true) {
 #if defined(_DEBUG)
@@ -55,6 +55,9 @@ task main() {
 #if defined(_DEBUG)
 			writeDebugStreamLine("Usercontrol start");
 #endif
+
+				startTask( FwControlTask );
+
 			startTask(usercontrol);
 			while (!bIfiAutonomousMode && !bIfiRobotDisabled) {
 				if (nVexRCReceiveState == vrNoXmiters) // the transmitters are powered off!!
