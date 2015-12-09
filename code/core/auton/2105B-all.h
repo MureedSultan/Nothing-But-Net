@@ -8,6 +8,18 @@ void autonFunc(){
 }
 
 void Auton_Progskills(){
+	Auton_Drive_Targeted(BACKWARD, -500);
+
+	/*
 	startTask( FwControlTask );
-	FwVelocitySet( &flywheel, 2325, 0.7 ); //2500 norm
+	FwSetGain(0.00030);
+	FwVelocitySet( &flywheel, 2350, 0.8);
+	sleep(3000);
+	Auton_Collect(127);
+	sleep(300);
+	FwVelocitySet( &flywheel, 2000, 0.8);
+	clearTimer(T2);
+	while(time1[T2] < 25000){}
+	FwVelocitySet( &flywheel, 0, 0);
+	//*/
 }

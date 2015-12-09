@@ -69,68 +69,69 @@ tMotor LiftLeftA, LiftLeftB, LiftLeftC, LiftRightA, LiftRightB, LiftRightC;
 tMotor Launcher1, Launcher2, Launcher3, Launcher4, Launcher5, Launcher6;
 tPID PID_Drive, PID_Drive_TurnTo;
 
+
+
+
 // Function definitions
-/*
+
 int Auton_GetMultiplier(tDirection Direction, tMotor WhichMotor) {
-switch(Direction) {
-case STOP:
-return 0;
-case FORWARD:
-switch(WhichMotor) {
-case DriveFrontLeft:
-return -1;
-case DriveFrontRight:
-return 1;
-case DriveRearLeft:
-return -1;
-case DriveRearRight:
-return 1;
-}
-case BACKWARD:
-return -Auton_GetMultiplier(FORWARD, WhichMotor);
-case LEFT:
+	switch(Direction) {
+	case STOP:
+		return 0;
+	case FORWARD:
+		switch(WhichMotor) {
+		case DriveFrontLeft:
+			return 1;
+		case DriveFrontRight:
+			return 1;
+		case DriveRearLeft:
+			return 1;
+		case DriveRearRight:
+			return 1;
+		}
+	case BACKWARD:
+		return -Auton_GetMultiplier(FORWARD, WhichMotor);
+	case LEFT:
 #if defined(_DEBUG)
 #ifdef MultiDriveEncoders
-writeDebugStreamLine("***ATTENTION: Crawling does not work with multiple encoders b/c I didn't feel like making exceptions.");
+		writeDebugStreamLine("***ATTENTION: Crawling does not work with multiple encoders b/c I didn't feel like making exceptions.");
 #endif
 #endif
-switch(WhichMotor) {
-case DriveFrontLeft:
-return 1;
-case DriveFrontRight:
-return 1;
-case DriveRearLeft:
-return -1;
-case DriveRearRight:
-return -1;
-}
-case RIGHT:
+		switch(WhichMotor) {
+		case DriveFrontLeft:
+			return -1;
+		case DriveFrontRight:
+			return 1;
+		case DriveRearLeft:
+			return -1;
+		case DriveRearRight:
+			return 1;
+		}
+	case RIGHT:
 #if defined(_DEBUG)
 #ifdef MultiDriveEncoders
-writeDebugStreamLine("***ATTENTION: Crawling does not work with multiple encoders b/c I didn't feel like making exceptions.");
+		writeDebugStreamLine("***ATTENTION: Crawling does not work with multiple encoders b/c I didn't feel like making exceptions.");
 #endif
 #endif
-return -Auton_GetMultiplier(LEFT, WhichMotor);
-case CLOCKWISE:
-return -1;
-case COUNTERCLOCKWISE:
-return 1;
+		return -Auton_GetMultiplier(LEFT, WhichMotor);
+	case CLOCKWISE:
+		return -1;
+	case COUNTERCLOCKWISE:
+		return 1;
+	}
+	return 0;
 }
-return 0;
-}
-*/
-/*
+
 void Auton_Drive(tDirection Direction = STOP, tSpeed Speed = 127, int Time = 0) {
-motor[DriveFrontLeft] = Speed * Auton_GetMultiplier(Direction,DriveFrontLeft);
-motor[DriveFrontRight] = Speed * Auton_GetMultiplier(Direction,DriveFrontRight);
-motor[DriveRearLeft] = Speed * Auton_GetMultiplier(Direction,DriveRearLeft);
-motor[DriveRearRight] = Speed * Auton_GetMultiplier(Direction,DriveRearRight);
-if(Time > 0) {
-sleep(Time);
-Auton_Drive();
+	motor[DriveFrontLeft] = Speed * Auton_GetMultiplier(Direction,DriveFrontLeft);
+	motor[DriveFrontRight] = Speed * Auton_GetMultiplier(Direction,DriveFrontRight);
+	motor[DriveRearLeft] = Speed * Auton_GetMultiplier(Direction,DriveRearLeft);
+	motor[DriveRearRight] = Speed * Auton_GetMultiplier(Direction,DriveRearRight);
+	if(Time > 0) {
+		sleep(Time);
+		Auton_Drive();
+	}
 }
-}
-*/
 #ifdef HasGyro
 void Auton_Drive_TurnTo(tDirection Direction, int Heading = 0, tSpeed Speed = 127) {
 	long StartTime = nSysTime;
@@ -184,93 +185,89 @@ void Auton_Drive_TurnTo_PID(tDirection Direction, int Heading = 0, tSpeed MaxSpe
 #endif
 }
 #endif
-/*
-void Auton_Drive_Targeted(tDirection Direction, int Distance = 0, tSpeed Speed = 127, int Timeout = 2000, int LeftSpeed = Speed) {
-const int StartTime = nSysTime;
-ResetDriveEncoders();
-Auton_Drive(Direction, Speed, 0);
-#if defined(_DEBUG)
-writeDebugStreamLine("Multiplier is %i", -Auton_GetMultiplier(Direction,DriveRearLeft));
-#endif
-switch(-Auton_GetMultiplier(Direction,DriveRearLeft)) {
-case -1:
-#if defined(_DEBUG)
-writeDebugStreamLine("Current encoder reading is %i, wanting less than %i", SensorValue[DriveEncoder], Distance);
-#endif
-#ifdef MultiDriveEncoders
-while(((SensorValue[DriveEncoder] + SensorValue[DriveEncoderLeft]) / 2) > -Auton_GetMultiplier(Direction,DriveRearRight) * Distance && (nSysTime - StartTime) < Timeout) {}
-#else
-while(SensorValue[DriveEncoder] > -Auton_GetMultiplier(Direction,DriveRearLeft) * Distance && (nSysTime - StartTime) < Timeout) {}
-#endif
-break;
-case 1:
-#if defined(_DEBUG)
-writeDebugStreamLine("Current encoder reading is %i, wanting greater than %i", SensorValue[DriveEncoder], Distance);
-#endif
-#ifdef MultiDriveEncoders
-while(((SensorValue[DriveEncoder] + SensorValue[DriveEncoderLeft]) / 2) < -Auton_GetMultiplier(Direction,DriveRearRight) * Distance && (nSysTime - StartTime) < Timeout) {}
-#else
-while(SensorValue[DriveEncoder] < -Auton_GetMultiplier(Direction,DriveRearLeft) * Distance && (nSysTime - StartTime) < Timeout) {}
-#endif
-break;
-}
-Auton_Drive();
-#if defined(_DEBUG)
-if(!((nSysTime - StartTime) < Timeout)) {
-writeDebugStreamLine("**WARNING: Drive to distance %i timed out after %i ms (encoder reading %i)", Distance, Timeout, SensorValue[DriveEncoder]);
-}
-#endif
-}
-*/
-/*
-void Auton_Drive_Targeted_PID(tDirection Direction, int Distance, tSpeed MaxSpeed = 127, int RequestedAccuracy = 5, int Timeout = 3000) {
-const int StartTime = nSysTime;
-ResetDriveEncoders();
-int Error = 0;
-int LastError = 0;
-int Integral = 0;
-int Derivative = 0;
-int Speed = 0;
-#if defined(_DEBUG)
-/*
-writeDebugStreamLine("Multiplier is %i", -Auton_GetMultiplier(Direction,DriveRearRight));
 
-#endif
-//writeDebugStreamLine("START-DISTANCE=%i",Distance);
-while((nSysTime - StartTime) < Timeout) {
-//writeDebugStreamLine("Sensor=%i",SensorValue[PID_Drive.Sensor]);
-//Error = SensorValue[PID_Drive.Sensor] - (-Auton_GetMultiplier(Direction,DriveRearRight)) * Distance;
-//writeDebugStreamLine("Target=%i",(-Auton_GetMultiplier(Direction,DriveRearRight)) * Distance);
-//writeDebugStreamLine("Error=%i",Error);
-if(PID_Drive.Ki != 0 && abs(Error) < PID_Drive.IntegralLimit) {
-Integral += Error;
-} else {
-Integral = 0;
-}
-if(abs(Error) < RequestedAccuracy) {
-break;
-}
-Speed = (-Auton_GetMultiplier(Direction,DriveRearRight)) * ((PID_Drive.Kp * Error) + (Integral * PID_Drive.Ki) + (Derivative * PID_Drive.Kd));
-//writeDebugStreamLine("Speed=%i",Speed);
-//writeDebugStreamLine("");
-if(Speed > MaxSpeed)
-Speed = MaxSpeed;
-if(Speed < -MaxSpeed)
-Speed = -MaxSpeed;
-Auton_Drive(Direction, Speed);
-LastError = Error;
-sleep(25);
-//writeDebugStreamLine("%i",Speed);
-}
-//writeDebugStreamLine("END-DISTANCE=%i",Distance);
-Auton_Drive();
+void Auton_Drive_Targeted(tDirection Direction, int Distance = 0, tSpeed Speed = 127, int Timeout = 2000, int LeftSpeed = Speed) {
+	const int StartTime = nSysTime;
+	ResetDriveEncoders();
+	Auton_Drive(Direction, Speed, 0);
 #if defined(_DEBUG)
-if(!((nSysTime - StartTime) < Timeout)) {
-writeDebugStreamLine("***WARNING: PID_Drive to distance %i timed out after %i ms (encoder reading %i)", Distance, Timeout, SensorValue[DriveEncoder]);
-}
+	writeDebugStreamLine("Multiplier is %i", -Auton_GetMultiplier(Direction,DriveRearLeft));
+#endif
+	switch(-Auton_GetMultiplier(Direction,DriveRearLeft)) {
+	case -1:
+#if defined(_DEBUG)
+		writeDebugStreamLine("Current encoder reading is %i, wanting less than %i", SensorValue[DriveEncoder], Distance);
+#endif
+#ifdef MultiDriveEncoders
+		while(((SensorValue[DriveEncoder] + SensorValue[DriveEncoderLeft]) / 2) > -Auton_GetMultiplier(Direction,DriveRearRight) * Distance && (nSysTime - StartTime) < Timeout) {}
+#else
+		while(SensorValue[DriveEncoder] > -Auton_GetMultiplier(Direction,DriveRearLeft) * Distance && (nSysTime - StartTime) < Timeout) {}
+#endif
+		break;
+	case 1:
+#if defined(_DEBUG)
+		writeDebugStreamLine("Current encoder reading is %i, wanting greater than %i", SensorValue[DriveEncoder], Distance);
+#endif
+#ifdef MultiDriveEncoders
+		while(((SensorValue[DriveEncoder] + SensorValue[DriveEncoderLeft]) / 2) < -Auton_GetMultiplier(Direction,DriveRearRight) * Distance && (nSysTime - StartTime) < Timeout) {}
+#else
+		while(SensorValue[DriveEncoder] < -Auton_GetMultiplier(Direction,DriveRearLeft) * Distance && (nSysTime - StartTime) < Timeout) {}
+#endif
+		break;
+	}
+	Auton_Drive();
+#if defined(_DEBUG)
+	if(!((nSysTime - StartTime) < Timeout)) {
+		writeDebugStreamLine("**WARNING: Drive to distance %i timed out after %i ms (encoder reading %i)", Distance, Timeout, SensorValue[DriveEncoder]);
+	}
 #endif
 }
-*/
+
+void Auton_Drive_Targeted_PID(tDirection Direction, int Distance, tSpeed MaxSpeed = 127, int RequestedAccuracy = 5, int Timeout = 3000) {
+	const int StartTime = nSysTime;
+	ResetDriveEncoders();
+	int Error = 0;
+	int LastError = 0;
+	int Integral = 0;
+	int Derivative = 0;
+	int Speed = 0;
+#if defined(_DEBUG)
+	writeDebugStreamLine("Multiplier is %i", -Auton_GetMultiplier(Direction,DriveRearRight));
+#endif
+	//writeDebugStreamLine("START-DISTANCE=%i",Distance);
+	while((nSysTime - StartTime) < Timeout) {
+		//writeDebugStreamLine("Sensor=%i",SensorValue[PID_Drive.Sensor]);
+		Error = SensorValue[PID_Drive.Sensor] - (-Auton_GetMultiplier(Direction,DriveRearRight)) * Distance;
+		//writeDebugStreamLine("Target=%i",(-Auton_GetMultiplier(Direction,DriveRearRight)) * Distance);
+		//writeDebugStreamLine("Error=%i",Error);
+		if(PID_Drive.Ki != 0 && abs(Error) < PID_Drive.IntegralLimit) {
+			Integral += Error;
+			} else {
+			Integral = 0;
+		}
+		if(abs(Error) < RequestedAccuracy) {
+			break;
+		}
+		Speed = (-Auton_GetMultiplier(Direction,DriveRearRight)) * ((PID_Drive.Kp * Error) + (Integral * PID_Drive.Ki) + (Derivative * PID_Drive.Kd));
+		//writeDebugStreamLine("Speed=%i",Speed);
+		//writeDebugStreamLine("");
+		if(Speed > MaxSpeed)
+			Speed = MaxSpeed;
+		if(Speed < -MaxSpeed)
+			Speed = -MaxSpeed;
+		Auton_Drive(Direction, Speed);
+		LastError = Error;
+		sleep(25);
+		//writeDebugStreamLine("%i",Speed);
+	}
+	//writeDebugStreamLine("END-DISTANCE=%i",Distance);
+	Auton_Drive();
+#if defined(_DEBUG)
+	if(!((nSysTime - StartTime) < Timeout)) {
+		writeDebugStreamLine("***WARNING: PID_Drive to distance %i timed out after %i ms (encoder reading %i)", Distance, Timeout, SensorValue[DriveEncoder]);
+	}
+#endif
+}
 
 #ifndef NoLCD
 void Auton_WaitForKeyPress(int Sleep = 0) {
@@ -499,8 +496,8 @@ void Auton_Collect(tSpeed Speed = 127, int Time = 0) {
 		4 | CollectionA
 		7 | CollectionB
 		------------------ PSUDO ------------------ */
-		motor[port4] = Speed;
-		motor[port7] = Speed;
+		motor[port3] = Speed;
+		motor[port8] = Speed;
 		break;
 	case 'C':
 
