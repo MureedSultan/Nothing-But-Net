@@ -57,7 +57,7 @@ void LCD_Menu_Define()
 	LCD.Menu[1].SelectIndex = 3;
 
 	LCD.Menu[2].Title = "Program Skills";
-	LCD.Menu[2].Text = "DO NOT SELECT";
+	//LCD.Menu[2].Text = "DO NOT SELECT";
 	LCD.Menu[2].NextIndex = 2;
 	LCD.Menu[2].SelectIndex = 3;
 

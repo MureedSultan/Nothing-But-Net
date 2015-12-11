@@ -24,7 +24,7 @@
 // TO CHANGE LCD THING, GO TO LCD FILE LINE: 272
 // LINE 58 COMP.H
 #define NoLiftLimits
- #define OneLiftEncoder
+#define OneLiftEncoder
 //#define NoPowerExpander
 //#define MultiDriveEncoders.
 #if defined(_DEBUG)
@@ -36,11 +36,12 @@ char Robot = 'C';
 #include "core/v1/pid/b.h" //same as B bot
 #include "core/v1/core.h"
 #include "core/DriverProfiles/2105C.h"
-//#include "core/auton/2105C-all.h"
+#include "core/auton/2105C-all.h"
 #include "core/misc/2105A-autonmanager.h"
 
 void ResetDriveEncoders() {
 }
 
 void init() {
+	SensorValue[encoder] = 0;
 }

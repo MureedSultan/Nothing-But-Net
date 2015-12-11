@@ -269,7 +269,8 @@ task LCD_Display {
 					displayLCDString(0, 3, "Auton     ");
 					Competition.Status = 1;
 					} else {
-					displayLCDString(0, 3, "Hi KOLBY    ");
+					displayLCDString(0, 3, "RPM:        ");
+					displayLCDNumber(0, 7, flywheel.current);
 					Competition.Status = 2;
 				}
 			}

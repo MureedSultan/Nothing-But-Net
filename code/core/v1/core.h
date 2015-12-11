@@ -81,11 +81,11 @@ int Auton_GetMultiplier(tDirection Direction, tMotor WhichMotor) {
 	case FORWARD:
 		switch(WhichMotor) {
 		case DriveFrontLeft:
-			return 1;
+			return -1;
 		case DriveFrontRight:
 			return 1;
 		case DriveRearLeft:
-			return 1;
+			return -1;
 		case DriveRearRight:
 			return 1;
 		}
@@ -99,13 +99,13 @@ int Auton_GetMultiplier(tDirection Direction, tMotor WhichMotor) {
 #endif
 		switch(WhichMotor) {
 		case DriveFrontLeft:
-			return -1;
+			return 1;
 		case DriveFrontRight:
 			return 1;
 		case DriveRearLeft:
 			return -1;
 		case DriveRearRight:
-			return 1;
+			return -1;
 		}
 	case RIGHT:
 #if defined(_DEBUG)
@@ -115,9 +115,9 @@ int Auton_GetMultiplier(tDirection Direction, tMotor WhichMotor) {
 #endif
 		return -Auton_GetMultiplier(LEFT, WhichMotor);
 	case CLOCKWISE:
-		return -1;
-	case COUNTERCLOCKWISE:
 		return 1;
+	case COUNTERCLOCKWISE:
+		return -1;
 	}
 	return 0;
 }
@@ -500,7 +500,8 @@ void Auton_Collect(tSpeed Speed = 127, int Time = 0) {
 		motor[port8] = Speed;
 		break;
 	case 'C':
-
+		motor[port3] = Speed;
+		motor[port8] = Speed;
 		break;
 	}
 	if (Time > 0) {
@@ -568,29 +569,29 @@ void Auton_Launch(tSpeed Speed = 127, int Time = 0) {
 void Auton_Throw(tSpeed Speed = 127, int Time = 0, int count){
 	switch(Robot){
 	case 'A':
-		/* ------------------ PSUDO ------------------
-		| CollectionA
-		| CollectionB
-		------------------ PSUDO ------------------ */
 
 		break;
 	case 'B':
-		/* ------------------ PSUDO ------------------
-		4 | CollectionA
-		7 | CollectionB
-		------------------ PSUDO ------------------ */
-		int c = 0;
-		while(c < count){
-			if(c > 0 && c <= 1){
-				Auton_Collect(0, 800);
+		int bc = 0;
+		while(bc < count){
+			if(bc > 0 && bc <= 1){
+				Auton_Collect(0, 300);
 			}
-			Auton_Collect(127, 550);
-			Auton_Collect(0, 1000);
-			c++;
+			Auton_Collect(127 * 0.7, 600);
+			Auton_Collect(0, 500);
+			bc++;
 		}
 		break;
 	case 'C':
-
+		int cc = 0;
+		while(cc < count){
+			if(cc > 0 && cc <= 1){
+				Auton_Collect(0, 500);
+			}
+			Auton_Collect(127, 600);
+			Auton_Collect(0, 500);
+			cc++;
+		}
 		break;
 	}
 	if (Time > 0) {
