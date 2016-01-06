@@ -534,14 +534,14 @@ void Auton_Launch(tSpeed Speed = 127, int Time = 0) {
 		m3 = 4
 		m4 = 5
 		------------------ PSUDO ------------------ */
-		nMotorPIDSpeedCtrl[Launcher1] = mtrSpeedReg;
-		nMotorPIDSpeedCtrl[Launcher2] = mtrSpeedReg;
-		nMotorPIDSpeedCtrl[Launcher3] = mtrSpeedReg;
-		nMotorPIDSpeedCtrl[Launcher4] = mtrSpeedReg;
-		slaveMotor(Launcher4, Launcher2);
-		slaveMotor(Launcher3, Launcher1);
-		motor[Launcher1] = Speed;
-		motor[Launcher2] = Speed;
+		nMotorPIDSpeedCtrl[LeftA] = mtrSpeedReg;
+		nMotorPIDSpeedCtrl[LeftB] = mtrSpeedReg;
+		nMotorPIDSpeedCtrl[RightA] = mtrSpeedReg;
+		nMotorPIDSpeedCtrl[RightB] = mtrSpeedReg;
+		slaveMotor(LeftB, LeftA);
+		slaveMotor(RightB, RightA);
+		motor[LeftA] = Speed;
+		motor[RightA] = Speed;
 		break;
 	case 'B':
 		/* ------------------ PSUDO ------------------

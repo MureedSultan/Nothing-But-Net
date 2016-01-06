@@ -12,7 +12,7 @@ task usercontrol {
 		if(vexRT[Btn7D] == 1){
 			FwSetGain(0.0025);
 			motorSpeed = 0.9;
-			FwVelocitySet( &flywheel, 2420, motorSpeed);
+			FwVelocitySet( &flywheel, 2450, motorSpeed);
 			}else if(vexRT[Btn7R] == 1){
 			FwSetGain(0.00025);
 			motorSpeed = 0;
