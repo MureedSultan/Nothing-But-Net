@@ -1,4 +1,10 @@
-#pragma config(I2C_Usage, I2C1, i2cSensors)
+
+task main()
+{
+
+
+
+}#pragma config(I2C_Usage, I2C1, i2cSensors)
 #pragma config(Sensor, in1,    PowerExpander,  sensorAnalog)
 #pragma config(Sensor, in2,    Gyroscope,      sensorGyro)
 #pragma config(Sensor, dgtl1,  enc,            sensorQuadEncoder)
@@ -12,8 +18,8 @@
 #pragma config(Motor,  port2,           LLB,           tmotorVex393_MC29, openLoop, reversed)
 #pragma config(Motor,  port3,           CollectionB,   tmotorVex393_MC29, openLoop, reversed)
 #pragma config(Motor,  port4,           CatA,          tmotorVex393HighSpeed_MC29, openLoop)
-#pragma config(Motor,  port5,           DriveLeft,     tmotorVex393HighSpeed_MC29, openLoop, encoderPort, I2C_2)
-#pragma config(Motor,  port6,           DriveRight,    tmotorVex393HighSpeed_MC29, openLoop, encoderPort, I2C_1)
+#pragma config(Motor,  port5,           DriverLeft,    tmotorVex393HighSpeed_MC29, PIDControl, driveLeft, encoderPort, I2C_2)
+#pragma config(Motor,  port6,           DriveRIght,    tmotorVex393HighSpeed_MC29, PIDControl, driveRight, encoderPort, I2C_1)
 #pragma config(Motor,  port7,           CatB,          tmotorVex393HighSpeed_MC29, openLoop)
 #pragma config(Motor,  port8,           CollectionA,   tmotorVex393_MC29, openLoop, reversed)
 #pragma config(Motor,  port9,           LRT,           tmotorVex393_MC29, openLoop)
@@ -33,7 +39,7 @@ const string FILE = __FILE__;
 int motorSpeed;
 char Robot = 'B';
 #include "core/v1/pid/b.h"
-#include "core/v1/coreB.h"
+#include "core/v1/core.h"
 #include "core/DriverProfiles/2105B.h"
 #include "core/auton/2105B-all.h"
 #include "core/misc/2105A-autonmanager.h"
