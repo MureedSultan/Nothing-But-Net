@@ -43,6 +43,7 @@ void ResetDriveEncoders() {
 	nMotorEncoder[DriveEncoderLeft] = 0;
 	SensorValue[DriveEncoder] = 0;
 	SensorValue[DriveEncoderLeft] = 0;
+	SensorValue[enc] = 0;
 }
 
 void init() {

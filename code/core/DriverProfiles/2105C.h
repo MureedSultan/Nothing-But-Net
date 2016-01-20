@@ -10,39 +10,31 @@ task usercontrol {
 		//			Launcher
 		//----------------------
 		if(vexRT[Btn7D] == 1){
-			FwSetGain(0.0025);
-			motorSpeed = 0.9;
-			FwVelocitySet( &flywheel, 2450, motorSpeed);
+			FwMaxPower(127);
+			motorSpeed = 1;
+			FwVelocitySet( &flywheel, 2500, motorSpeed);
 			}else if(vexRT[Btn7R] == 1){
-			FwSetGain(0.00025);
 			motorSpeed = 0;
 			FwVelocitySet( &flywheel, 0, motorSpeed);
 			}else if(vexRT[Btn7L] == 1){
-			FwSetGain(0.00025);
-			motorSpeed = 0.8;
-			FwVelocitySet( &flywheel, 2050, motorSpeed);
+			FwMaxPower(88);
+			motorSpeed = 1;
+			FwVelocitySet( &flywheel, 2000, motorSpeed);
 			}else if(vexRT[Btn7U] == 1){
-			FwSetGain(0.00001);
-			motorSpeed = 0.3;
-			FwVelocitySet( &flywheel, 1600, motorSpeed);
-		} else if(vexRT[Btn8U] == 1) {
-			FwSetGain(0.00005);
-			motorSpeed = 0.5;
-			FwVelocitySet( &flywheel, 2100, motorSpeed);
+			motorSpeed = 0.7;
+			FwVelocitySet( &flywheel, 1565, motorSpeed);
+			}else if(vexRT[Btn8U] == 1) {
+			FwMaxPower(75);
+			motorSpeed = 1;
+			FwVelocitySet( &flywheel, 1880, motorSpeed);
 		}
-
-
-
-
-
-
 
 		//----------------------
 		//			Collectionion
 		//----------------------
 		if(vexRT[Btn6U] == 1){
 			if(vexRT[Btn8R] == 1){
-				motor[CollectionA] =  127 * 0.45;
+				motor[CollectionA] =  127 * 0.85;
 				} else {
 				motor[CollectionA] =  127;
 			}

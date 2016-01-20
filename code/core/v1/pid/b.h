@@ -1,8 +1,15 @@
 // Update inteval (in mS) for the flywheel control loop
-#define FW_LOOP_SPEED              25
+#define FW_LOOP_SPEED             25
 
 // Maximum power we want to send to the flywheel motors
-#define FW_MAX_POWER              127
+// LINE 203
+#define FW_MAX_POWER              75
+
+int MAX_POWER = 75;
+
+void FwMaxPower(int power = 127){
+	MAX_POWER = power;
+}
 
 // encoder counts per revolution depending on motor
 #define MOTOR_TPR_269           240.448
@@ -12,10 +19,6 @@
 #define MOTOR_TPR_QUAD          360.0
 
 float DEFAULT_GAIN = 0.00025;
-void
-FwSetGain(float ngain){
-	DEFAULT_GAIN = ngain;
-}
 
 // Structure to gather all the flywheel ralated data
 typedef struct _fw_controller {
@@ -195,7 +198,7 @@ FwControlTask()
 		FwControlUpdateVelocityTbh( fw ) ;
 
 		// Scale drive into the range the motors need
-		fw->motor_drive  = (fw->drive * FW_MAX_POWER) + 0.5; // Orig: 0.5
+		fw->motor_drive  = (fw->drive * MAX_POWER) + 0.5; // Orig: 0.5
 
 		// Final Limit of motor values - don't really need this
 		if( fw->motor_drive >  127 ) fw->motor_drive =  127;
