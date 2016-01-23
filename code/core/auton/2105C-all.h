@@ -1,38 +1,36 @@
 void autonFunc(){
 	startTask( FwControlTask );
-	while(true){
-		FwVelocitySet(&flywheel, 2590, 1);
-		sleep(5000);
-		Auton_Throw(63, 0, 20);
-	}
+	FwMaxPower(127);
+	FwVelocitySet( &flywheel, 2460, 1);
+	wait1Msec(3500);
+	Auton_Throw(100, 8);
 }
 
 void Auton_Progskills(){
-//*/
 	startTask( FwControlTask );
-	FwVelocitySet( &flywheel, 2220, 0.6);
+	FwMaxPower(75);
+	FwVelocitySet( &flywheel, 1820, 0.8);
 	wait1Msec(2800);
 	Auton_Collect(127);
-	wait1Msec(200);
-	FwVelocitySet( &flywheel, 2040, 0.6);
-	wait1Msec(2000); //21000
-	//*/
-	Auton_Drive_Targeted(FORWARD, 425);
-	Auton_Drive_Targeted(BACKWARD, 200, 63);
-	wait1Msec(400);
-	SensorValue[Gyroscope] = 0;
-	wait1Msec(400);
+	wait1Msec(21000); //21000
+	FwVelocitySet( &flywheel, 0, 0);
+	Auton_Drive_Targeted(FORWARD, 400, 63);
 	Auton_Drive_TurnTo(CLOCKWISE, -800, 45);
+	Auton_Drive_Targeted(BACKWARD, 300, 63);
 	wait1Msec(500);
-	FwVelocitySet( &flywheel, 2005, 0.9);
-	Auton_Drive_Targeted(FORWARD, 1600, 80);
+	ResetDriveEncoders();
+	Auton_Drive_Targeted(FORWARD, 1800, 70);
 	wait1Msec(500);
+	Auton_Drive_Targeted(FORWARD, 1050, 70);
+	wait1Msec(500);
+	SensorValue[Gyroscope] = 0;
+	Auton_Collect(-100, 250);
 	Auton_Collect(0);
-	Auton_Drive_TurnTo(COUNTERCLOCKWISE, -200, 50);
+	FwMaxPower(80);
+	FwVelocitySet( &flywheel, 1900, 1);
+	Auton_Drive_TurnTo(COUNTERCLOCKWISE, 900, 63);
 	wait1Msec(500);
-	Auton_Drive_Targeted(FORWARD, 700, 63);
-	Auton_Drive_Targeted(BACKWARD, 150, 63);
-	wait1Msec(500);
-	Auton_Drive_TurnTo(COUNTERCLOCKWISE, 45, 50);
+	Auton_Drive_Targeted(BACKWARD, 150, 70);
+	wait1Msec(1000);
 	Auton_Collect(127);
 }

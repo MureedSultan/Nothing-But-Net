@@ -556,7 +556,7 @@ void Auton_Launch(tSpeed Speed = 127, int Time = 0) {
 	}
 }
 
-void Auton_Throw(tSpeed Speed = 127, int Time = 0, int count){
+void Auton_Throw(tSpeed Speed = 127, int count, int Time = 0){
 	switch(Robot){
 	case 'A':
 
@@ -565,10 +565,10 @@ void Auton_Throw(tSpeed Speed = 127, int Time = 0, int count){
 		int bc = 0;
 		while(bc < count){
 			if(bc > 0 && bc <= 1){
-				Auton_Collect(0, 300);
+				Auton_Collect(0, 500);
 			}
-			Auton_Collect(127 * 0.7, 600);
-			Auton_Collect(0, 500);
+			Auton_Collect(Speed, 500);
+			Auton_Collect(0, 1400);
 			bc++;
 		}
 		break;
@@ -578,7 +578,7 @@ void Auton_Throw(tSpeed Speed = 127, int Time = 0, int count){
 			if(cc > 0 && cc <= 1){
 				Auton_Collect(0, 500);
 			}
-			Auton_Collect(127, 600);
+			Auton_Collect(Speed, 600);
 			Auton_Collect(0, 500);
 			cc++;
 		}

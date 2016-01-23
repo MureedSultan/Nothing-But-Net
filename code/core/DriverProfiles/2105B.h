@@ -10,7 +10,7 @@ task usercontrol {
 			//FwSetGain(0.00025);
 			FwMaxPower(127);
 			motorSpeed = 1;
-			FwVelocitySet( &flywheel, 2620, motorSpeed);
+			FwVelocitySet( &flywheel, 2450, motorSpeed);
 			}else if(vexRT[Btn7R] == 1){
 			motorSpeed = 0;
 			FwVelocitySet( &flywheel, 0, motorSpeed);
@@ -25,35 +25,61 @@ task usercontrol {
 			FwVelocitySet( &flywheel, 2480, motorSpeed);
 			}else if(vexRT[Btn8U] == 1) {
 			FwMaxPower(75);
-			//FwSetGain(0.00005);
 			motorSpeed = 0.8;
 			FwVelocitySet( &flywheel, 1820, motorSpeed);
 		}
+
 		if(vexRT[Btn8L] == 1){
-			motor[CatA] = 127;
-			motor[CatB] = 127;
-		} else {
-			motor[CatA] = 0;
-			motor[CatB] = 0;
+			SensorValue[Gyroscope] = 0;
+			FwVelocitySet( &flywheel, 0, 0);
+			Auton_Drive_Targeted(FORWARD, 400, 63);
+			Auton_Drive_TurnTo(CLOCKWISE, -800, 45);
+			Auton_Drive_Targeted(BACKWARD, 300, 63);
+			Auton_Collect(90);
+			wait1Msec(500);
+			ResetDriveEncoders();
+			Auton_Drive_Targeted(FORWARD, 2000, 70);
+			wait1Msec(500);
+			Auton_Drive_Targeted(FORWARD, 1100, 70);
+			wait1Msec(500);
+			SensorValue[Gyroscope] = 0;
+			Auton_Collect(-70, 250);
+			Auton_Collect(0);
+			FwMaxPower(75);
+			FwVelocitySet( &flywheel, 1900, 1);
+			Auton_Drive_TurnTo(COUNTERCLOCKWISE, 875, 45);
+			wait1Msec(500);
+			Auton_Drive_Targeted(BACKWARD, 150, 70);
+			wait1Msec(1000);
+			Auton_Collect(127);
 		}
+
+		/* ---------- CAT LAUNCHER -----------
+		if(vexRT[Btn8L] == 1){
+		motor[CatA] = 127;
+		motor[CatB] = 127;
+		} else {
+		motor[CatA] = 0;
+		motor[CatB] = 0;
+		}
+		//*/
+
+		//----------------------
+		//			Auto Drive thing
+		//----------------------
 
 		//----------------------
 		//			Collection
 		//----------------------
 		if(vexRT[Btn6U] == 1){
-			if(vexRT[Btn8R] == 1){
-				motor[CollectionA] =  127 * 0.65;
-				} else {
-				motor[CollectionA] =  127;
-			}
-
-			motor[CollectionB] =  127;
+			motor[CollectionA] = 127;
+			motor[CollectionB] = 127;
 			}else if(vexRT[Btn6D] == 1){
-			motor[CollectionA] =  -127;
-			motor[CollectionB] =  -127;
+			motor[CollectionA] = -127;
+			motor[CollectionB] = -127;
 			}else{
-			motor[CollectionA] =  0;
-			motor[CollectionB] =  0;
+			motor[CollectionA] = 0;
+			motor[CollectionB] = 0;
 		}
 
 		if(vexRT[Btn5U] == 1){

@@ -99,9 +99,9 @@ int Auton_GetMultiplier(tDirection Direction, tMotor WhichMotor) {
 #endif
 		switch(WhichMotor) {
 		case DriveFrontLeft:
-			return 1;
+			return -1;
 		case DriveFrontRight:
-			return 1;
+			return -1;
 		case DriveRearLeft:
 			return -1;
 		case DriveRearRight:
@@ -566,33 +566,15 @@ void Auton_Launch(tSpeed Speed = 127, int Time = 0) {
 	}
 }
 
-void Auton_Throw(tSpeed Speed = 127, int Time = 0, int count){
-	switch(Robot){
-	case 'A':
-
-		break;
-	case 'B':
-		int bc = 0;
-		while(bc < count){
-			if(bc > 0 && bc <= 1){
-				Auton_Collect(0, 300);
-			}
-			Auton_Collect(127 * 0.7, 600);
+void Auton_Throw(tSpeed Speed = 127, int count, int Time = 0){
+	int cc = 0;
+	while(cc < count){
+		if(cc > 0 && cc <= 1){
 			Auton_Collect(0, 500);
-			bc++;
 		}
-		break;
-	case 'C':
-		int cc = 0;
-		while(cc < count){
-			if(cc > 0 && cc <= 1){
-				Auton_Collect(0, 500);
-			}
-			Auton_Collect(127, 600);
-			Auton_Collect(0, 500);
-			cc++;
-		}
-		break;
+		Auton_Collect(Speed, 400);
+		Auton_Collect(0, 1500);
+		cc++;
 	}
 	if (Time > 0) {
 		sleep(Time);

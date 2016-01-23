@@ -11,7 +11,7 @@ int LastLeftL = 0;
 		//			Launcher
 		//----------------------
 		if(vexRT[Btn7D] == 1){
-			motorSpeed = 113;
+			motorSpeed = 120;
 			nMotorPIDSpeedCtrl[LeftA] = mtrSpeedReg;
 			nMotorPIDSpeedCtrl[RightA] = mtrSpeedReg;
 			nMotorPIDSpeedCtrl[LeftB] = mtrSpeedReg;
