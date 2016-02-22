@@ -1,8 +1,15 @@
 // Update inteval (in mS) for the flywheel control loop
-#define FW_LOOP_SPEED              25
+#define FW_LOOP_SPEED             25
 
 // Maximum power we want to send to the flywheel motors
-#define FW_MAX_POWER              127
+// LINE 203
+#define FW_MAX_POWER              75
+
+int MAX_POWER = 75;
+
+void FwMaxPower(int power = 127){
+	MAX_POWER = power;
+}
 
 // encoder counts per revolution depending on motor
 #define MOTOR_TPR_269           240.448
@@ -10,6 +17,8 @@
 #define MOTOR_TPR_393S          392
 #define MOTOR_TPR_393T          627.2
 #define MOTOR_TPR_QUAD          360.0
+
+float DEFAULT_GAIN = 0.00025;
 
 // Structure to gather all the flywheel ralated data
 typedef struct _fw_controller {
@@ -52,10 +61,9 @@ static  fw_controller   flywheel;
 void
 FwMotorSet( int motorSpeed )
 {
-	motor[LeftB] = motorSpeed;
-	motor[LeftA] = motorSpeed;
-	motor[RightB] = motorSpeed;
-	motor[RightA] = motorSpeed;
+	motor[LT] = motorSpeed;
+	motor[LM] = motorSpeed;
+	motor[LB] = motorSpeed;
 }
 
 /*-----------------------------------------------------------------------------*/
@@ -64,9 +72,7 @@ FwMotorSet( int motorSpeed )
 long
 FwMotorEncoderGet()
 {
-	return( (((((nMotorEncoder[LeftB]) + (nMotorEncoder[LeftA])) / 2) * -1) +
-					(((nMotorEncoder[RightB]) + (nMotorEncoder[RightA])) / 2)) *
-					(3/49));
+	return( (SensorValue[enc] * -1) * 3 );
 }
 
 /*-----------------------------------------------------------------------------*/
@@ -170,7 +176,7 @@ FwControlTask()
 	fw_controller *fw = &flywheel;
 
 	// Set the gain
-	fw->gain = 0.00025;
+	fw->gain = DEFAULT_GAIN; //0.00025
 
 	// We are using Speed geared motors
 	// Set the encoder ticks per revolution
@@ -191,7 +197,7 @@ FwControlTask()
 		FwControlUpdateVelocityTbh( fw ) ;
 
 		// Scale drive into the range the motors need
-		fw->motor_drive  = (fw->drive * FW_MAX_POWER) + 0.55; // Orig: 0.5
+		fw->motor_drive  = (fw->drive * MAX_POWER) + 0.5; // Orig: 0.5
 
 		// Final Limit of motor values - don't really need this
 		if( fw->motor_drive >  127 ) fw->motor_drive =  127;

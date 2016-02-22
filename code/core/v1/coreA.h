@@ -95,9 +95,9 @@ int Auton_GetMultiplier(tDirection Direction, tMotor WhichMotor) {
 #endif
 		switch(WhichMotor) {
 		case DriveLeft:
-			return 1;
+			return -1;
 		case DriveRight:
-			return 1;
+			return -1;
 		}
 	case RIGHT:
 #if defined(_DEBUG)
@@ -107,16 +107,16 @@ int Auton_GetMultiplier(tDirection Direction, tMotor WhichMotor) {
 #endif
 		return -Auton_GetMultiplier(LEFT, WhichMotor);
 	case CLOCKWISE:
-		return 1;
-	case COUNTERCLOCKWISE:
 		return -1;
+	case COUNTERCLOCKWISE:
+		return 1;
 	}
 	return 0;
 }
 
 void Auton_Drive(tDirection Direction = STOP, tSpeed Speed = 127, int Time = 0) {
-	motor[DriveLeft] = Speed * Auton_GetMultiplier(Direction, DriveLeft);
-	motor[DriveRight] = Speed * Auton_GetMultiplier(Direction, DriveRight);
+	motor[DriveLeft] = Speed * Auton_GetMultiplier(Direction,DriveLeft);
+	motor[DriveRight] = Speed * Auton_GetMultiplier(Direction,DriveRight);
 	if(Time > 0) {
 		sleep(Time);
 		Auton_Drive();
@@ -189,7 +189,7 @@ void Auton_Drive_Targeted(tDirection Direction, int Distance = 0, tSpeed Speed =
 		writeDebugStreamLine("Current encoder reading is %i, wanting less than %i", SensorValue[DriveEncoder], Distance);
 #endif
 #ifdef MultiDriveEncoders
-		while(((SensorValue[DriveEncoder] + SensorValue[DriveLeft]) / 2) > -Auton_GetMultiplier(Direction,DriveRight) * Distance && (nSysTime - StartTime) < Timeout) {}
+		while(((SensorValue[DriveEncoder] + SensorValue[DriveEncoderLeft]) / 2) > -Auton_GetMultiplier(Direction,DriveRearRight) * Distance && (nSysTime - StartTime) < Timeout) {}
 #else
 		while(SensorValue[DriveEncoder] > -Auton_GetMultiplier(Direction,DriveLeft) * Distance && (nSysTime - StartTime) < Timeout) {}
 #endif
@@ -199,7 +199,7 @@ void Auton_Drive_Targeted(tDirection Direction, int Distance = 0, tSpeed Speed =
 		writeDebugStreamLine("Current encoder reading is %i, wanting greater than %i", SensorValue[DriveEncoder], Distance);
 #endif
 #ifdef MultiDriveEncoders
-		while(((SensorValue[DriveEncoder] + SensorValue[DriveLeft]) / 2) < -Auton_GetMultiplier(Direction,DriveRight) * Distance && (nSysTime - StartTime) < Timeout) {}
+		while(((SensorValue[DriveEncoder] + SensorValue[DriveEncoderLeft]) / 2) < -Auton_GetMultiplier(Direction,DriveRearRight) * Distance && (nSysTime - StartTime) < Timeout) {}
 #else
 		while(SensorValue[DriveEncoder] < -Auton_GetMultiplier(Direction,DriveLeft) * Distance && (nSysTime - StartTime) < Timeout) {}
 #endif
@@ -471,119 +471,19 @@ void pre_auton() {
 #endif
 }
 
-void Auton_Collect(tSpeed Speed = 127, int Time = 0) {
-	switch(Robot){
-	case 'A':
-		/* ------------------ PSUDO ------------------
-		1 | CollectionB
-		10 | CollectionA
-		------------------ PSUDO ------------------ */
-		motor[port1] = Speed;
-		motor[port10] = Speed;
-		break;
-	case 'B':
-		/* ------------------ PSUDO ------------------
-		4 | CollectionA
-		7 | CollectionB
-		------------------ PSUDO ------------------ */
-		motor[port3] = Speed;
-		motor[port8] = Speed;
-		break;
-	case 'C':
-		motor[port3] = Speed;
-		motor[port8] = Speed;
-		break;
-	}
+void Auton_Collect(tSpeed Speed = 127, tSpeed CollectionASp = 127, int Time = 0) {
+	motor[CollectionA] = CollectionASp;
+	motor[CollectionB] = Speed;
 	if (Time > 0) {
 		sleep(Time);
 		Auton_Collect();
 	}
 }
 
-void Auton_DefineSensors(tSensors sen1){
-	encoder = sen1;
-}
-
-void Auton_DefineLauncher(tMotor m1, tMotor m2, tMotor m3, tMotor m4, tMotor m5, tMotor m6){
-	Launcher1 = m1;
-	Launcher2 = m2;
-	Launcher3 = m3;
-	Launcher4 = m4;
-	Launcher5 = m5;
-	Launcher6 = m6;
-}
-
-void Auton_Launch(tSpeed Speed = 127, int Time = 0) {
-	switch(Robot){
-	case 'A':
-		/* ------------------ PSUDO ------------------
-		2 | LeftB
-		3 | RightB
-		4 | LeftA
-		5 | RightA
-		m1 = 2
-		m2 = 3
-		m3 = 4
-		m4 = 5
-		------------------ PSUDO ------------------ */
-		nMotorPIDSpeedCtrl[Launcher1] = mtrSpeedReg;
-		nMotorPIDSpeedCtrl[Launcher2] = mtrSpeedReg;
-		nMotorPIDSpeedCtrl[Launcher3] = mtrSpeedReg;
-		nMotorPIDSpeedCtrl[Launcher4] = mtrSpeedReg;
-		slaveMotor(Launcher4, Launcher2);
-		slaveMotor(Launcher3, Launcher1);
-		motor[Launcher1] = Speed;
-		motor[Launcher2] = Speed;
-		break;
-	case 'B':
-		/* ------------------ PSUDO ------------------
-		1 | LLT
-		2 | LLM
-		3 | LLB
-		8 | LRT
-		9 | LRM
-		10 | LRB
-		------------------ PSUDO ------------------ */
-		FwVelocitySet( &flywheel, 2480, 0.9);
-		break;
-	case 'C':
-
-		break;
-	}
-	if (Time > 0) {
-		sleep(Time);
-		Auton_Launch();
-	}
-}
-
-void Auton_Throw(tSpeed Speed = 127, int count, int Time = 0){
-	switch(Robot){
-	case 'A':
-
-		break;
-	case 'B':
-		int bc = 0;
-		while(bc < count){
-			if(bc > 0 && bc <= 1){
-				Auton_Collect(0, 500);
-			}
-			Auton_Collect(Speed, 500);
-			Auton_Collect(0, 1400);
-			bc++;
-		}
-		break;
-	case 'C':
-		int cc = 0;
-		while(cc < count){
-			if(cc > 0 && cc <= 1){
-				Auton_Collect(0, 500);
-			}
-			Auton_Collect(Speed, 500);
-			Auton_Collect(0, 600);
-			cc++;
-		}
-		break;
-	}
+void Auton_Launch(tSpeed Speed = 127, int Time = 0){
+	motor[CT] = Speed;
+	motor[CM] = Speed;
+	motor[CB] = Speed;
 	if (Time > 0) {
 		sleep(Time);
 		Auton_Launch();

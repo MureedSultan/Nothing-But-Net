@@ -1,108 +1,88 @@
 task usercontrol {
 	//int motorSpeed = 0;
-int LastLeftU = 0;
-int LastLeftL = 0;
+	int buttonToggleState = 0;
+	int buttonPressed = 0;
+	int drivemultiplier = 1;
+	int dval = 0;
+	int deadband = 10;
 	while(true){
-		motor[DriveFrontRight] = vexRT[Ch4] - vexRT[Ch3] - vexRT[Ch1];
-		motor[DriveRearRight] =  vexRT[Ch4] - vexRT[Ch3] + vexRT[Ch1];
-		motor[DriveFrontLeft] = vexRT[Ch4] + vexRT[Ch3] + vexRT[Ch1];
-		motor[DriveRearLeft] =  vexRT[Ch4] + vexRT[Ch3] - vexRT[Ch1];
+		//----------------------
+		//			Drive
+		//----------------------
+
+		dval = (vexRT[Ch2] - vexRT[Ch1] + (vexRT[Ch3]*0.5) - (vexRT[Ch4]*0.5) * drivemultiplier) * drivemultiplier;
+		motor[DriveRight]  = dval < deadband && dval > -deadband ? 0 : dval;
+		dval = (-vexRT[Ch2] - vexRT[Ch1] - (vexRT[Ch3]*0.5) - (vexRT[Ch4]*0.5) * drivemultiplier) * drivemultiplier;
+		motor[DriveLeft]  = dval < deadband && dval > -deadband ? 0 : dval;
+
+
 		//----------------------
 		//			Launcher
 		//----------------------
-		if(vexRT[Btn7D] == 1){
-			motorSpeed = 113;
-			nMotorPIDSpeedCtrl[LeftA] = mtrSpeedReg;
-			nMotorPIDSpeedCtrl[RightA] = mtrSpeedReg;
-			nMotorPIDSpeedCtrl[LeftB] = mtrSpeedReg;
-			nMotorPIDSpeedCtrl[RightB] = mtrSpeedReg;
-			slaveMotor(RightB, RightA);
-			slaveMotor(LeftB, LeftA);
-			motor[LeftA] = motorSpeed;
-			motor[RightA] = motorSpeed;
-			startTask(launchSound);
-			}else if(vexRT[Btn7R] == 1){
-			motorSpeed = 0;
-			motor[LeftA] = motorSpeed;
-			motor[LeftB] = motorSpeed;
-			motor[RightA] = motorSpeed;
-			motor[RightB] = motorSpeed;
-			stopTask(launchSound);
-			}else if(vexRT[Btn7L] == 1){
-			motorSpeed = 98;
-			motor[LeftA] = motorSpeed;
-			motor[LeftB] = motorSpeed;
-			motor[RightA] = motorSpeed;
-			motor[RightB] = motorSpeed;
-			startTask(launchSound);
-			}else if(vexRT[Btn7U] == 1){
-			motorSpeed = 84;
-			motor[LeftA] = motorSpeed;
-			motor[LeftB] = motorSpeed;
-			motor[RightA] = motorSpeed;
-			motor[RightB] = motorSpeed;
-			startTask(launchSound);
-			} else {
-			writeDebugStreamLine("Set speed: %d", motorSpeed);
-		}
 
-
-		if(vexRT[Btn8U] == 1 && LastLeftU == 0) {
-			motorSpeed = motorSpeed + 5;
-			LastLeftU = 1;
-			} else if(vexRT[Btn8U] == 0 && LastLeftU == 1) {
-			LastLeftU = 0;
-		} else {
-			motor[LeftA] = motorSpeed;
-			motor[LeftB] = motorSpeed;
-			motor[RightA] = motorSpeed;
-			motor[RightB] = motorSpeed;
-		}
-
-		if(vexRT[Btn8L] == 1 && LastLeftL == 0) {
-			if(motorSpeed > 127){
-				motorSpeed = 127;
-			} else if(motorSpeed < 0){
-				motorSpeed = 127;
+		// HAMMER
+		if( vexRT[ Btn8D ] == 1 ){
+			if( ! buttonPressed ){
+				buttonToggleState = 1 - buttonToggleState;
+				buttonPressed = 1;
 			}
-			motorSpeed = motorSpeed - 5;
-			LastLeftL = 1;
-			} else if(vexRT[Btn8L] == 0 && LastLeftL == 1) {
-			LastLeftL = 0;
-		} else {
-			motor[LeftA] = motorSpeed;
-			motor[LeftB] = motorSpeed;
-			motor[RightA] = motorSpeed;
-			motor[RightB] = motorSpeed;
+			}else{
+			buttonPressed = 0;
+		}
+
+		if(buttonToggleState){
+			motor[CT] = 127;
+			motor[CM] = 127;
+			motor[CB] = 127;
+			}else{
+			motor[CT] = 0;
+			motor[CM] = 0;
+			motor[CB] = 0;
+		}
+
+		// FLYWHEEL
+		if(vexRT[Btn7R] == 1){
+			motorSpeed = 0;
+			FwVelocitySet( &flywheel, 0, motorSpeed);
+			}else if(vexRT[Btn7D] == 1){
+			//FwSetGain(0.00025);
+			FwMaxPower(127);
+			motorSpeed = 1;
+			FwVelocitySet( &flywheel, 2500, motorSpeed);
+			}else if(vexRT[Btn7L] == 1){
+			FwMaxPower(127);
+			motorSpeed = 0.9;
+			FwVelocitySet( &flywheel, 2100, motorSpeed);
+			}else if(vexRT[Btn7U] == 1){
+			FwMaxPower(82);
+			motorSpeed = 0.7;
+			FwVelocitySet( &flywheel, 1600, motorSpeed);
+			}else if(vexRT[Btn8U] == 1){
+			FwMaxPower(83);
+			motorSpeed = 0.9;
+			FwVelocitySet( &flywheel, 1900, motorSpeed);
 		}
 
 		//----------------------
 		//			Collection
 		//----------------------
-		if(vexRT[Btn5U] == 1){
-			motor[CollectionB] =  127;
-			}else if(vexRT[Btn5D] == 1){
-			motor[CollectionB] =  -127;
-			}else{
-			motor[CollectionB] =  0;
-		}
 		if(vexRT[Btn6U] == 1){
-			motor[CollectionA] =  127;
+			motor[CollectionA] = 127;
+			motor[CollectionB] = 127;
 			}else if(vexRT[Btn6D] == 1){
-			motor[CollectionA] =  -127;
+			motor[CollectionA] = -127;
+			motor[CollectionB] = -127;
 			}else{
-			motor[CollectionA] =  0;
+			motor[CollectionB] = 0;
+			if(vexRT[Btn5U] == 1){
+				motor[CollectionA] =  127;
+				}else if(vexRT[Btn5D] == 1){
+				motor[CollectionA] =  -127;
+				} else {
+				motor[CollectionA] =  0;
+			}
 		}
-		//----------------------
-		//				Brake
-		//----------------------
-		if(vexRT[Btn8D] == 1){
-			SensorValue[Brake1] = 1;
-			SensorValue[Brake2] = 1;
-			}else if(vexRT[Btn8R] == 1){
-			SensorValue[Brake1] = 0;
-			SensorValue[Brake2] = 0;
-		}
+
 
 	}
 }

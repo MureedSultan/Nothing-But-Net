@@ -10,34 +10,37 @@ task usercontrol {
 		//			Launcher
 		//----------------------
 		if(vexRT[Btn7D] == 1){
-			FwMaxPower(105);
+			FwMaxPower(80);
 			motorSpeed = 1;
-			FwVelocitySet( &flywheel, 2450, motorSpeed);
+			FwVelocitySet( &flywheel, 2400, motorSpeed);
 			}else if(vexRT[Btn7R] == 1){
 			motorSpeed = 0;
 			FwVelocitySet( &flywheel, 0, motorSpeed);
 			}else if(vexRT[Btn7L] == 1){
-			FwMaxPower(88);
-			motorSpeed = 1;
-			FwVelocitySet( &flywheel, 2000, motorSpeed);
+			FwMaxPower(68);
+			motorSpeed = 0.9;
+			FwVelocitySet( &flywheel, 2050, motorSpeed);
 			}else if(vexRT[Btn7U] == 1){
-			motorSpeed = 0.7;
-			FwVelocitySet( &flywheel, 1565, motorSpeed);
+			FwMaxPower(52);
+			motorSpeed = 0.5;
+			FwVelocitySet( &flywheel, 1700, motorSpeed);
 			}else if(vexRT[Btn8U] == 1) {
-			FwMaxPower(72);
-			motorSpeed = 1;
-			FwVelocitySet( &flywheel, 1850, motorSpeed);
+			FwMaxPower(63);
+			motorSpeed = 0.4;
+			FwVelocitySet( &flywheel, 1950, motorSpeed);
 		}
 
 		//----------------------
 		//			Collection
 		//----------------------
-		if(vexRT[Btn6U] == 1 && vexRT[Btn6D] == 1){
-			motor[CollectionA] =  127;
-			motor[CollectionB] =  70;
-			}else if(vexRT[Btn6U] == 1){
-			motor[CollectionA] = 127;
-			motor[CollectionB] =  127;
+		if(vexRT[Btn6U] == 1){
+			if(motorSpeed == 1){
+				motor[CollectionA] = 127;
+				motor[CollectionB] =  127;
+				} else {
+				motor[CollectionA] = 127;
+				motor[CollectionB] =  127;
+			}
 			}else if(vexRT[Btn6D] == 1){
 			motor[CollectionA] =  -127;
 			motor[CollectionB] =  -127;
@@ -50,10 +53,6 @@ task usercontrol {
 			motor[CollectionB] =  127;
 			}else if(vexRT[Btn5D] == 1){
 			motor[CollectionB] =  -127;
-			}else{
-			if(vexRT[Btn6U] == 1){
-				motor[CollectionB] =  127;
-			}
 		}
 
 		//----------------------
@@ -85,25 +84,25 @@ task usercontrol {
 			SensorValue[Gyroscope] = 0;
 			Auton_Collect();
 			FwVelocitySet( &flywheel, 0, 0);
-			Auton_Drive_Targeted(FORWARD, 200, 100);
-			Auton_Drive_TurnTo(CLOCKWISE, -800, 65);
-			Auton_Drive_Targeted(BACKWARD, 300, 100);
+			Auton_Drive_Targeted(FORWARD, 300, 127);
+			Auton_Drive_TurnTo(CLOCKWISE, -800, 80);
+			Auton_Drive_Targeted(BACKWARD, 300, 127);
 			wait1Msec(500);
 			ResetDriveEncoders();
-			Auton_Drive_Targeted(FORWARD, 2000, 100);
+			Auton_Drive_Targeted(FORWARD, 1800, 127);
 			wait1Msec(500);
-			Auton_Drive_Targeted(FORWARD, 850, 100);
+			Auton_Drive_Targeted(FORWARD, 950, 120);
 			wait1Msec(500);
 			SensorValue[Gyroscope] = 0;
-			Auton_Collect(-70, 250);
-			Auton_Collect(0);
-			FwMaxPower(72);
-			FwVelocitySet( &flywheel, 1870, 1);
-			Auton_Drive_TurnTo(COUNTERCLOCKWISE, 900, 65);
+			Auton_Collect(-100, -100,250);
+			Auton_Collect(0, 0);
+			FwMaxPower(65);
+			FwVelocitySet( &flywheel, 1900, 0.4);
+			Auton_Drive_TurnTo(COUNTERCLOCKWISE, 940, 65);
 			wait1Msec(500);
-			Auton_Drive_Targeted(BACKWARD, 150, 60);
+			Auton_Drive_Targeted(BACKWARD, 130);
 			wait1Msec(1000);
-			Auton_Collect(127);
+			Auton_Collect();
 		}
 
 	}

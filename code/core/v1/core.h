@@ -481,7 +481,7 @@ void pre_auton() {
 #endif
 }
 
-void Auton_Collect(tSpeed Speed = 127, int Time = 0) {
+void Auton_Collect(tSpeed Speed = 127, tSpeed CollectionASp = 127, int Time = 0) {
 	switch(Robot){
 	case 'A':
 		/* ------------------ PSUDO ------------------
@@ -501,7 +501,7 @@ void Auton_Collect(tSpeed Speed = 127, int Time = 0) {
 		break;
 	case 'C':
 		motor[port3] = Speed;
-		motor[port8] = Speed;
+		motor[port8] = CollectionASp;
 		break;
 	}
 	if (Time > 0) {
@@ -570,10 +570,10 @@ void Auton_Throw(tSpeed Speed = 127, int count, int Time = 0){
 	int cc = 0;
 	while(cc < count){
 		if(cc > 0 && cc <= 1){
-			Auton_Collect(0, 500);
+			Auton_Collect(0, 0, 500);
 		}
-		Auton_Collect(Speed, 400);
-		Auton_Collect(0, 1500);
+		Auton_Collect(Speed, Speed, 400);
+		Auton_Collect(0, 0, 1500);
 		cc++;
 	}
 	if (Time > 0) {

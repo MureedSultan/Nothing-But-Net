@@ -8,25 +8,27 @@ task usercontrol {
 		//----------------------
 		if(vexRT[Btn7D] == 1){
 			//FwSetGain(0.00025);
-			FwMaxPower(127);
+			FwMaxPower(105);
 			motorSpeed = 1;
-			FwVelocitySet( &flywheel, 2450, motorSpeed);
+			FwVelocitySet( &flywheel, 2400, motorSpeed);
 			}else if(vexRT[Btn7R] == 1){
 			motorSpeed = 0;
 			FwVelocitySet( &flywheel, 0, motorSpeed);
 			}else if(vexRT[Btn7L] == 1){
+			FwMaxPower(82);
 			motorSpeed = 0.9;
-			FwVelocitySet( &flywheel, 1760, motorSpeed);
+			FwVelocitySet( &flywheel, 1950, motorSpeed);
 			}else if(vexRT[Btn7U] == 1){
+			FwMaxPower(115);
 			motorSpeed = 0.7;
-			FwVelocitySet( &flywheel, 1565, motorSpeed);
+			FwVelocitySet( &flywheel, 1450, motorSpeed);
 			} else if(vexRT[Btn8D] == 1){
 			motorSpeed = 0.9;
 			FwVelocitySet( &flywheel, 2480, motorSpeed);
 			}else if(vexRT[Btn8U] == 1) {
-			FwMaxPower(75);
-			motorSpeed = 0.8;
-			FwVelocitySet( &flywheel, 1820, motorSpeed);
+			FwMaxPower(70);
+			motorSpeed = 0.4;
+			FwVelocitySet( &flywheel, 1875, motorSpeed);
 		}
 
 		if(vexRT[Btn8L] == 1){
@@ -40,14 +42,15 @@ task usercontrol {
 			ResetDriveEncoders();
 			Auton_Drive_Targeted(FORWARD, 2000, 70);
 			wait1Msec(500);
-			Auton_Drive_Targeted(FORWARD, 1100, 70);
+			Auton_Drive_Targeted(FORWARD, 950, 70);
+			Auton_Collect(0);
 			wait1Msec(500);
 			SensorValue[Gyroscope] = 0;
 			Auton_Collect(-70, 250);
 			Auton_Collect(0);
-			FwMaxPower(75);
+			FwMaxPower(70);
 			FwVelocitySet( &flywheel, 1900, 1);
-			Auton_Drive_TurnTo(COUNTERCLOCKWISE, 875, 45);
+			Auton_Drive_TurnTo(COUNTERCLOCKWISE, 800, 45);
 			wait1Msec(500);
 			Auton_Drive_Targeted(BACKWARD, 150, 70);
 			wait1Msec(1000);
@@ -72,8 +75,13 @@ task usercontrol {
 		//			Collection
 		//----------------------
 		if(vexRT[Btn6U] == 1){
-			motor[CollectionA] = 127;
-			motor[CollectionB] = 127;
+			if(motorSpeed == 1){
+				motor[CollectionA] = 80;
+				motor[CollectionB] = 127;
+				}else {
+				motor[CollectionA] = 127;
+				motor[CollectionB] = 127;
+			}
 			}else if(vexRT[Btn6D] == 1){
 			motor[CollectionA] = -127;
 			motor[CollectionB] = -127;
@@ -81,15 +89,13 @@ task usercontrol {
 			motor[CollectionA] = 0;
 			motor[CollectionB] = 0;
 		}
-
+		if(vexRT[Btn8R] == 1){
+			motor[CollectionA] = 100;
+		}
 		if(vexRT[Btn5U] == 1){
 			motor[CollectionB] =  127;
 			}else if(vexRT[Btn5D] == 1){
 			motor[CollectionB] =  -127;
-			}else{
-			if(vexRT[Btn6U] == 1){
-				motor[CollectionB] =  127;
-			}
 		}
 
 		//----------------------

@@ -19,15 +19,16 @@
 /* for any consequences.                                */
 /********************************************************/
 
-const char LCD_SizeOfMenu = 5; // MUST be at least 1 to prevent crash
+const char LCD_SizeOfMenu = 7; // MUST be at least 1 to prevent crash
 
 #undef LCD_NotUsing_Menu       // Clear any statements against compiling LCD_Menu.
 // If you don't want it, why would you include it?
 
 typedef struct {
 	bool IsBlue;
-	bool Right;
+	bool Front;
 	bool Set;
+	bool Drive;
 	char Auton;
 	byte Status; // status is supposed to be updated by lcd_display?
 } _Competition;
@@ -57,17 +58,26 @@ void LCD_Menu_Define()
 	LCD.Menu[1].SelectIndex = 3;
 
 	LCD.Menu[2].Title = "Program Skills";
-	//LCD.Menu[2].Text = "DO NOT SELECT";
+	LCD.Menu[2].Text = "DO NOT SELECT";
 	LCD.Menu[2].NextIndex = 2;
 	LCD.Menu[2].SelectIndex = 3;
 
 	LCD.Menu[3].Title = "Start Point";
-	LCD.Menu[3].Text = "Right";
+	LCD.Menu[3].Text = "Front - Drive";
 	LCD.Menu[3].PrevIndex = 3;
 
 	LCD.Menu[4].Title = "Start Point";
-	LCD.Menu[4].Text = "Left";
-	LCD.Menu[4].NextIndex = 4;
+	LCD.Menu[4].Text = "Front - Stay";
+	LCD.Menu[4].PrevIndex = 3;
+
+	LCD.Menu[5].Title = "Start Point";
+	LCD.Menu[5].Text = "BACK - Drive";
+	LCD.Menu[5].PrevIndex = 4;
+
+	LCD.Menu[6].Title = "Start Point";
+	LCD.Menu[6].Text = "BACK - Stay";
+	LCD.Menu[6].PrevIndex = 5;
+	LCD.Menu[6].NextIndex = 6;
 }
 
 bool LCD_Menu_Execute()
@@ -86,30 +96,34 @@ bool LCD_Menu_Execute()
 		writeDebugStreamLine("Set as blue");
 #endif
 		break;
-	case 3:
-		Competition.Right = true;
+	case 3: // FRONT - DRIVE
+		Competition.Front = true;
+		Competition.Drive = true;
 #if defined(_DEBUG)
-		writeDebugStreamLine("Set as Right");
+		writeDebugStreamLine("Set as Front - DRIVE");
 #endif
 		break;
-	case 4:
-		Competition.Right = false;
+	case 4: // FRONT - STAY
+		Competition.Front = true;
+		Competition.Drive = false;
 #if defined(_DEBUG)
-		writeDebugStreamLine("Set as Left");
+		writeDebugStreamLine("Set as Front - STAY");
 #endif
 		break;
-	/*case 4:
-		Competition.Auton = 1;
+	case 5: // BACK - DRIVE
+		Competition.Front = false;
+		Competition.Drive = true;
 #if defined(_DEBUG)
-		writeDebugStreamLine("Set as Numero Uno");
+		writeDebugStreamLine("Set as BACK - DRIVE");
 #endif
 		break;
-	case 5:
-		Competition.Auton = 2;
+	case 6: // BACK - STAY
+		Competition.Front = false;
+		Competition.Drive = false;
 #if defined(_DEBUG)
-		writeDebugStreamLine("Set as Numero Dos");
+		writeDebugStreamLine("Set as BACK - STAY");
 #endif
-		break;*/
+		break;
 	case 2:
 		Competition.Auton = 3;
 #if defined(_DEBUG)
