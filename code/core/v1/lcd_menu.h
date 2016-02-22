@@ -19,6 +19,9 @@
 /* for any consequences.                                */
 /********************************************************/
 
+
+// note to kberzinch: add warning about unsigned chars
+
 const char LCD_SizeOfMenu = 7; // MUST be at least 1 to prevent crash
 
 #undef LCD_NotUsing_Menu       // Clear any statements against compiling LCD_Menu.
@@ -66,17 +69,14 @@ void LCD_Menu_Define()
 	LCD.Menu[3].Text = "Front - Drive";
 	LCD.Menu[3].PrevIndex = 3;
 
-	LCD.Menu[4].Title = "Start Point";
+	LCD.Menu[4].Title = LCD.Menu[3].Title;
 	LCD.Menu[4].Text = "Front - Stay";
-	LCD.Menu[4].PrevIndex = 3;
 
-	LCD.Menu[5].Title = "Start Point";
+	LCD.Menu[5].Title = LCD.Menu[3].Title;
 	LCD.Menu[5].Text = "BACK - Drive";
-	LCD.Menu[5].PrevIndex = 4;
 
-	LCD.Menu[6].Title = "Start Point";
+	LCD.Menu[6].Title = LCD.Menu[3].Title;
 	LCD.Menu[6].Text = "BACK - Stay";
-	LCD.Menu[6].PrevIndex = 5;
 	LCD.Menu[6].NextIndex = 6;
 }
 
