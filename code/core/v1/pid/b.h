@@ -11,6 +11,12 @@ void FwMaxPower(int power = 127){
 	MAX_POWER = power;
 }
 
+float DEFAULT_GAIN = 0.00025;
+
+void FwGain(float gain = 0.00025){
+	DEFAULT_GAIN = gain;
+}
+
 // encoder counts per revolution depending on motor
 #define MOTOR_TPR_269           240.448
 #define MOTOR_TPR_393R          261.333
@@ -18,7 +24,6 @@ void FwMaxPower(int power = 127){
 #define MOTOR_TPR_393T          627.2
 #define MOTOR_TPR_QUAD          360.0
 
-float DEFAULT_GAIN = 0.00025;
 
 // Structure to gather all the flywheel ralated data
 typedef struct _fw_controller {

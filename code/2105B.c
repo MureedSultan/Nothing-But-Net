@@ -32,7 +32,14 @@ char Robot = 'B';
 #include "core/v1/pid/b.h"
 #include "core/v1/coreB.h"
 #include "core/DriverProfiles/2105B.h"
-#include "core/auton/2105B-all.h"
+
+#include "core/auton/B/Red_Front.h"
+#include "core/auton/B/Red_Back.h"
+#include "core/auton/B/Blue_Front.h"
+#include "core/auton/B/Blue_Back.h"
+#include "core/auton/B/Stay.h"
+#include "core/auton/B/Progskills.h"
+
 #include "core/misc/2105A-autonmanager.h"
 
 void ResetDriveEncoders() {
@@ -40,8 +47,19 @@ void ResetDriveEncoders() {
 	nMotorEncoder[DriveEncoderLeft] = 0;
 	SensorValue[DriveEncoder] = 0;
 	SensorValue[DriveEncoderLeft] = 0;
-	SensorValue[enc] = 0;
 }
 
 void init() {
+	SensorValue[enc] = 0;
+	SensorValue[Gyroscope] = 0;
+	PID_Drive.Sensor = DriveEncoder;
+	PID_Drive.IntegralLimit = 100;
+	PID_Drive.Kp = 0.06;
+	PID_Drive.Ki = 0.03;
+	PID_Drive.Kd = 0.1;
+	PID_Drive_TurnTo.Sensor = Gyroscope;
+	PID_Drive_TurnTo.IntegralLimit = 200;
+	PID_Drive_TurnTo.Kp = 0.18;
+	PID_Drive_TurnTo.Ki = 0.0001;
+	PID_Drive_TurnTo.Kd = 0.001;
 }

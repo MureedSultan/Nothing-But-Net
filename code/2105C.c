@@ -16,8 +16,8 @@
 #pragma config(Motor,  port1,           DriveRearLeft, tmotorVex393_HBridge, openLoop, encoderPort, I2C_2)
 #pragma config(Motor,  port2,           DriveFrontLeft, tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port3,           CollectionB,   tmotorVex393_MC29, openLoop, reversed)
-#pragma config(Motor,  port4,           LLT,           tmotorVex393HighSpeed_MC29, openLoop, reversed)
-#pragma config(Motor,  port5,           LLB,           tmotorVex393HighSpeed_MC29, openLoop)
+#pragma config(Motor,  port4,           LLT,           tmotorVex393HighSpeed_MC29, openLoop)
+#pragma config(Motor,  port5,           LLB,           tmotorVex393HighSpeed_MC29, openLoop, reversed)
 #pragma config(Motor,  port6,           LRT,           tmotorVex393HighSpeed_MC29, openLoop, reversed)
 #pragma config(Motor,  port7,           LRB,           tmotorVex393HighSpeed_MC29, openLoop)
 #pragma config(Motor,  port8,           CollectionA,   tmotorVex393_MC29, openLoop, reversed)
@@ -40,7 +40,14 @@ char Robot = 'C';
 #include "core/v1/pid/b.h" //same as B bot
 #include "core/v1/core.h"
 #include "core/DriverProfiles/2105C.h"
-#include "core/auton/2105C-all.h"
+
+#include "core/auton/C/Red_Front.h"
+#include "core/auton/C/Red_Back.h"
+#include "core/auton/C/Blue_Front.h"
+#include "core/auton/C/Blue_Back.h"
+#include "core/auton/C/Stay.h"
+#include "core/auton/C/Progskills.h"
+
 #include "core/misc/2105A-autonmanager.h"
 
 void ResetDriveEncoders() {

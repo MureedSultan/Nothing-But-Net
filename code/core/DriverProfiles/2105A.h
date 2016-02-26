@@ -52,9 +52,9 @@ task usercontrol {
 			}else if(vexRT[Btn7L] == 1){
 			FwMaxPower(127);
 			motorSpeed = 0.9;
-			FwVelocitySet( &flywheel, 2100, motorSpeed);
+			FwVelocitySet( &flywheel, 2000, motorSpeed);
 			}else if(vexRT[Btn7U] == 1){
-			FwMaxPower(82);
+			FwMaxPower(72);
 			motorSpeed = 0.7;
 			FwVelocitySet( &flywheel, 1600, motorSpeed);
 			}else if(vexRT[Btn8U] == 1){
@@ -83,6 +83,25 @@ task usercontrol {
 			}
 		}
 
+		//----------------------
+		//		Driver Skills
+		//----------------------
+
+		if(vexRT[Btn8R] == 1){
+			SensorValue[Gyroscope] = 0;
+			Auton_Drive_Targeted(FORWARD, 160, 55);
+			Auton_Drive_TurnTo(CLOCKWISE, -800, 45);
+			Auton_Drive_Targeted(BACKWARD, 150, 63, 500);
+			ResetDriveEncoders();
+			Auton_Collect(70, 127);
+			Auton_Drive_Targeted_PID(BACKWARD, 1245, 90);
+			wait1Msec(1000);
+			Auton_Drive_Targeted_PID(BACKWARD, 1100, 127);
+			Auton_Collect(-70, 127);
+			Auton_Drive_TurnTo_PID(CLOCKWISE, 40, 60, 5, 1000);
+			Auton_Collect(0, 0);
+			Auton_Drive_Targeted(BACKWARD, 150, 55);
+		}
 
 	}
 }

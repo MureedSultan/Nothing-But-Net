@@ -6,50 +6,36 @@ task autonomous {
 	}
 	switch(Competition.IsBlue) {
 	case true:
-		switch(Competition.Front) {
+		switch(Competition.Drive){
 		case true:
-			switch(Competition.Drive) {
+			switch(Competition.Front){
 				case true:
-					Auton_Blue_Front_Drive();
+					Auton_Blue_Front();
 				break;
 				case false:
-					Auton_Blue_Front_Stay();
+					Auton_Blue_Back();
 				break;
 			}
 			break;
 		case false:
-			switch(Competition.Drive) {
-				case true:
-					Auton_Blue_Back_Drive();
-				break;
-				case false:
-					Auton_Blue_Back_Stay();
-				break;
-			}
+			Auton_Stay();
 			break;
 		}
 		break;
 	case false:
-		switch(Competition.Front) {
+		switch(Competition.Drive){
 		case true:
-			switch(Competition.Drive) {
+			switch(Competition.Front){
 				case true:
-					Auton_Red_Front_Drive();
+					Auton_Red_Front();
 				break;
 				case false:
-					Auton_Red_Front_Stay();
+					Auton_Red_Back();
 				break;
 			}
 			break;
 		case false:
-			switch(Competition.Drive) {
-				case true:
-					Auton_Red_Back_Drive();
-				break;
-				case false:
-					Auton_Red_Back_Stay();
-				break;
-			}
+			Auton_Stay();
 			break;
 		}
 		break;

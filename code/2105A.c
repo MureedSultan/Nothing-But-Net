@@ -31,16 +31,11 @@ int motorSpeed;
 #include "core/v1/coreA.h"
 #include "core/DriverProfiles/2105A.h"
 
-#include "core/auton/A/Red_Front_Drive.h"
-#include "core/auton/A/Red_Front_Stay.h"
-#include "core/auton/A/Red_Back_Drive.h"
-#include "core/auton/A/Red_Back_Stay.h"
-
-#include "core/auton/A/Blue_Front_Drive.h"
-#include "core/auton/A/Blue_Front_Stay.h"
-#include "core/auton/A/Blue_Back_Drive.h"
-#include "core/auton/A/Blue_Back_Stay.h"
-
+#include "core/auton/A/Red_Front.h"
+#include "core/auton/A/Red_Back.h"
+#include "core/auton/A/Blue_Front.h"
+#include "core/auton/A/Blue_Back.h"
+#include "core/auton/A/Stay.h"
 #include "core/auton/A/Progskills.h"
 
 #include "core/misc/2105A-autonmanager.h"
