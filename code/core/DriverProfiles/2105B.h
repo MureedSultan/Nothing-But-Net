@@ -16,9 +16,9 @@ task usercontrol {
 		motor[DriveLeft]  = dval < deadband && dval > -deadband ? 0 : dval;
 		*/
 
-		dval = ((vexRT[Ch2] * drivemultiplier) + (vexRT[Ch4]*0.5) * drivemultiplier);
+		dval = ((vexRT[Ch2] * drivemultiplier) + (vexRT[Ch1]*0.5) + vexRT[Ch4] * drivemultiplier);
 		motor[DriveRight]  = dval < deadband && dval > -deadband ? 0 : dval;
-		dval = ((-vexRT[Ch2] * drivemultiplier) + (vexRT[Ch4]*0.5) * drivemultiplier);
+		dval = ((-vexRT[Ch2] * drivemultiplier) + (vexRT[Ch1]*0.5) + vexRT[Ch4] * drivemultiplier);
 		motor[DriveLeft]  = dval < deadband && dval > -deadband ? 0 : dval;
 
 		//----------------------
@@ -113,7 +113,7 @@ task usercontrol {
 				Auton_Collect(100, 127);
 				wait1Msec(350);
 				Auton_Collect(0, 127);
-				wait1Msec(800);
+				wait1Msec(400);
 				}else {
 				motor[CollectionA] = 127;
 				motor[CollectionB] = 127;

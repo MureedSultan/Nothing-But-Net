@@ -2,8 +2,8 @@ void Auton_Blue_Front(){
 	startTask( FwControlTask );
 	SensorValue[Gyroscope] = 0;
 	ResetDriveEncoders();
-	FwMaxPower(79);
-	FwVelocitySet( &flywheel, 1930, 0.9);
+	FwMaxPower(85);
+	FwVelocitySet( &flywheel, 1970, 0.9);
 	wait1Msec(1500);
 	Auton_Drive_Targeted_PID(FORWARD, 1650, 127);
 	Auton_Collect(90, 127);
