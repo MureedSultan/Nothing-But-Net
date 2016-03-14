@@ -1,9 +1,8 @@
 task usercontrol {
-	int buttonToggleState = 0;
-	int buttonPressed = 0;
-	int drivemultiplier = 1;
 	int dval = 0;
 	int deadband = 10;
+	int buttonToggleState = 0;
+	int buttonPressed = 0;
 	while(1){
 		//----------------------
 		//			Drive
@@ -16,10 +15,14 @@ task usercontrol {
 		motor[DriveLeft]  = dval < deadband && dval > -deadband ? 0 : dval;
 		*/
 
-		dval = ((vexRT[Ch2] * drivemultiplier) + (vexRT[Ch1]*0.5) + vexRT[Ch4] * drivemultiplier);
-		motor[DriveRight]  = dval < deadband && dval > -deadband ? 0 : dval;
-		dval = ((-vexRT[Ch2] * drivemultiplier) + (vexRT[Ch1]*0.5) + vexRT[Ch4] * drivemultiplier);
-		motor[DriveLeft]  = dval < deadband && dval > -deadband ? 0 : dval;
+		dval = (vexRT[Ch2] - vexRT[Ch1]);
+		motor[DriveFrontRight]  = dval < deadband && dval > -deadband ? 0 : dval;
+		dval = (vexRT[Ch2] + vexRT[Ch1]);
+		motor[DriveFrontLeft]  = dval < deadband && dval > -deadband ? 0 : dval;
+		dval = (vexRT[Ch2] - vexRT[Ch1]);
+		motor[DriveRearRight]  = dval < deadband && dval > -deadband ? 0 : dval;
+		dval = (vexRT[Ch2] + vexRT[Ch1]);
+		motor[DriveRearLeft]  = dval < deadband && dval > -deadband ? 0 : dval;
 
 		//----------------------
 		//			Launcher
@@ -41,9 +44,6 @@ task usercontrol {
 			FwMaxPower(95);
 			motorSpeed = 0.7;
 			FwVelocitySet( &flywheel, 1460, motorSpeed);
-			} else if(vexRT[Btn8D] == 1){
-			motorSpeed = 0.9;
-			FwVelocitySet( &flywheel, 2480, motorSpeed);
 			}else if(vexRT[Btn8U] == 1) {
 			FwMaxPower(72);
 			FwGain(0.0005);
@@ -51,28 +51,21 @@ task usercontrol {
 			FwVelocitySet( &flywheel, 1870, motorSpeed);
 		}
 
-		if(vexRT[Btn8L] == 1){
-			SensorValue[Gyroscope] = 0;
-			FwVelocitySet( &flywheel, 0, 0);
-			Auton_Drive_Targeted(FORWARD, 400, 63);
-			Auton_Drive_TurnTo(CLOCKWISE, -800, 45);
-			Auton_Drive_Targeted(BACKWARD, 300, 63);
-			Auton_Collect(80, 110);
-			wait1Msec(500);
-			ResetDriveEncoders();
-			Auton_Drive_Targeted(FORWARD, 2000, 70);
-			wait1Msec(1000);
-			Auton_Drive_Targeted(FORWARD, 1030, 70);
-			wait1Msec(500);
-			SensorValue[Gyroscope] = 0;
-			Auton_Collect(-127, 127);
-			wait1Msec(1000);
-			FwMaxPower(73);
-			FwVelocitySet( &flywheel, 1900, 0.8);
-			Auton_Drive_TurnTo(COUNTERCLOCKWISE, 850, 50);
-			Auton_Drive_Targeted(BACKWARD, 200, 70);
-			wait1Msec(500);
-			Auton_Collect(127, 127);
+		if(vexRT[Btn8R] == 1){
+			if( ! buttonPressed ){
+				buttonToggleState = 1 - buttonToggleState;
+				buttonPressed = 1;
+			}
+			}else{
+			buttonPressed = 0;
+		}
+
+		if(buttonToggleState){
+			motor[LPT] = 127;
+			motor[LPB] = 127;
+			}else{
+			motor[LPT] = 0;
+			motor[LPB] = 0;
 		}
 
 		/* ---------- CAT LAUNCHER -----------
@@ -92,59 +85,46 @@ task usercontrol {
 		//----------------------
 		//			Collection
 		//----------------------
-
-		if( vexRT[ Btn8R ] == 1 ){
-			if( ! buttonPressed ){
-				buttonToggleState = 1 - buttonToggleState;
-				buttonPressed = 1;
-			}
-			}else{
-			buttonPressed = 0;
-		}
-
-		if(buttonToggleState){
-			drivemultiplier = -1;
-			}else{
-			drivemultiplier = 1;
-		}
-
 		if(vexRT[Btn6U] == 1){
-			if(motorSpeed == 1){
-				Auton_Collect(100, 127);
-				wait1Msec(350);
-				Auton_Collect(0, 127);
-				wait1Msec(400);
-				}else {
-				motor[CollectionA] = 127;
-				motor[CollectionB] = 127;
-			}
+			motor[CollectionA] = 127;
+			motor[CollectionB] = 127;
 			}else if(vexRT[Btn6D] == 1){
 			motor[CollectionA] = -127;
 			motor[CollectionB] = -127;
 			}else{
-			motor[CollectionA] = 0;
+			if(vexRT[Btn5U] == 1){
+				motor[CollectionA] =  127;
+				}else if(vexRT[Btn5D] == 1){
+				motor[CollectionA] =  -127;
+				} else {
+				motor[CollectionA] = 0;
+			}
 			motor[CollectionB] = 0;
 		}
-		if(vexRT[Btn5U] == 1){
-			motor[CollectionB] =  127;
-			}else if(vexRT[Btn5D] == 1){
-			motor[CollectionB] =  -127;
-		}
+
 
 		//----------------------
-		//		Driver Skills
+		//				Lift
 		//----------------------
-		/*
-		if(vexRT[Btn5U] == 1){
-		while(true){
-		Auton_Launch();
-		sleep(3000);
-		Auton_Throw(63, 0, 4);
-		while(true){
-		Auton_Collect();
+		if(vexRT[Btn8D] == 1){
+			SensorValue[pnu_plat1] = 1;
+			SensorValue[pnu_plat2] = 1;
+			} else {
+			SensorValue[pnu_plat1] = 0;
+			SensorValue[pnu_plat2] = 0;
 		}
+
+		if(vexRT[Btn8L] == 1){
+			SensorValue[pnu_bar1] = 1;
+			SensorValue[pnu_bar2] = 1;
+			SensorValue[pnu_lift1] = 1;
+			SensorValue[pnu_lift2] = 1;
+			} else {
+			SensorValue[pnu_bar1] = 0;
+			SensorValue[pnu_bar2] = 0;
+			SensorValue[pnu_lift1] = 0;
+			SensorValue[pnu_lift2] = 0;
 		}
-		}
-		*/
+
 	}
 }

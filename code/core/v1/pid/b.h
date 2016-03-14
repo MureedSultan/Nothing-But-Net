@@ -66,10 +66,8 @@ static  fw_controller   flywheel;
 void
 FwMotorSet( int motorSpeed )
 {
-	motor[LLT] = motorSpeed;
-	motor[LLB] = motorSpeed;
-	motor[LRT] = motorSpeed;
-	motor[LRB] = motorSpeed;
+	motor[LT] = motorSpeed;
+	motor[LB] = motorSpeed;
 }
 
 /*-----------------------------------------------------------------------------*/
@@ -78,7 +76,7 @@ FwMotorSet( int motorSpeed )
 long
 FwMotorEncoderGet()
 {
-	return( (SensorValue[enc] * -1) * 3 );
+	return( (SensorValue[enc]) * 3 );
 }
 
 /*-----------------------------------------------------------------------------*/

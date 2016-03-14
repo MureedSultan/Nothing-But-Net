@@ -54,9 +54,9 @@ task usercontrol {
 			motorSpeed = 0.9;
 			FwVelocitySet( &flywheel, 2000, motorSpeed);
 			}else if(vexRT[Btn7U] == 1){
-			FwMaxPower(72);
-			motorSpeed = 0.7;
-			FwVelocitySet( &flywheel, 1600, motorSpeed);
+			FwMaxPower(78);
+			motorSpeed = 0.8;
+			FwVelocitySet( &flywheel, 1670, motorSpeed);
 			}else if(vexRT[Btn8U] == 1){
 			FwMaxPower(83);
 			motorSpeed = 0.9;
