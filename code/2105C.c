@@ -37,7 +37,7 @@ const string FILE = __FILE__;
 
 int motorSpeed;
 char Robot = 'C';
-#include "core/v1/pid/b.h" //same as B bot
+#include "core/v1/pid/c.h" //same as B bot
 #include "core/v1/core.h"
 #include "core/DriverProfiles/2105C.h"
 

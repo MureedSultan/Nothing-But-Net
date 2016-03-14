@@ -13,9 +13,9 @@ void Auton_Progskills(){
 	Auton_Collect(70, 127);
 	Auton_Drive_Targeted_PID(BACKWARD, 1245, 90);
 	wait1Msec(1000);
-	Auton_Drive_Targeted_PID(BACKWARD, 1100, 127);
+	Auton_Drive_Targeted_PID(BACKWARD, 1125, 127);
 	Auton_Collect(-70, 127);
-	Auton_Drive_TurnTo_PID(CLOCKWISE, 40, 60, 5, 1000);
+	Auton_Drive_TurnTo_PID(CLOCKWISE, 60, 60, 5, 1000);
 	Auton_Collect(0, 0);
 	Auton_Drive_Targeted(BACKWARD, 150, 55);
 	//*

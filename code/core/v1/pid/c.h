@@ -18,6 +18,7 @@ void FwMaxPower(int power = 127){
 #define MOTOR_TPR_393T          627.2
 #define MOTOR_TPR_QUAD          360.0
 
+
 // Structure to gather all the flywheel ralated data
 typedef struct _fw_controller {
 	long            counter;                ///< loop counter used for debug
@@ -59,9 +60,10 @@ static  fw_controller   flywheel;
 void
 FwMotorSet( int motorSpeed )
 {
-	motor[LT] = motorSpeed;
-	motor[LM] = motorSpeed;
-	motor[LB] = motorSpeed;
+	motor[LLT] = motorSpeed;
+	motor[LLB] = motorSpeed;
+	motor[LRT] = motorSpeed;
+	motor[LRB] = motorSpeed;
 }
 
 /*-----------------------------------------------------------------------------*/
