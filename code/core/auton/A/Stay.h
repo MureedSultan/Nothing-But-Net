@@ -1,8 +1,8 @@
 void Auton_Stay(){
 	startTask( FwControlTask );
 	FwMaxPower(120);
-	FwVelocitySet( &flywheel, 2420, 1);
-	wait1Msec(3500);
+	FwVelocitySet( &flywheel, 2430, 0.8);
+	wait1Msec(3600);
 	while(true){
 		Auton_Collect(127, 127);
 		wait1Msec(350);
