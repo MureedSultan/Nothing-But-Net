@@ -11,9 +11,9 @@ void FwMaxPower(int power = 127){
 	MAX_POWER = power;
 }
 
-float DEFAULT_GAIN = 0.00025;
+float DEFAULT_GAIN = 0.00045;
 
-void FwGain(float gain = 0.00025){
+void FwGain(float gain = 0.00045){
 	DEFAULT_GAIN = gain;
 }
 

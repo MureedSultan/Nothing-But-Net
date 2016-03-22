@@ -53,14 +53,14 @@ task usercontrol {
 			driverSetRpm = 2450;
 			FwVelocitySet( &flywheel, driverSetRpm, motorSpeed);
 			}else if(vexRT[Btn7L] == 1){
-			FwMaxPower(83);
-			motorSpeed = 0.6;
-			driverSetRpm = 1960;
+			FwMaxPower(85);
+			motorSpeed = 0.65;
+			driverSetRpm = 1875;
 			FwVelocitySet( &flywheel, driverSetRpm, motorSpeed);
 			}else if(vexRT[Btn7U] == 1){
-			FwMaxPower(83);
+			FwMaxPower(70);
 			motorSpeed = 0.8;
-			FwVelocitySet( &flywheel, 1670, motorSpeed);
+			FwVelocitySet( &flywheel, 1650, motorSpeed);
 			}else if(vexRT[Btn8U] == 1){
 			FwMaxPower(83);
 			motorSpeed = 0.9;
@@ -72,15 +72,29 @@ task usercontrol {
 		//			Collection
 		//----------------------
 		if(vexRT[Btn6U] == 1){
-			if(flywheel.current >= (driverSetRpm - 25)){
+			if(motorSpeed == 1){
+				if(SensorValue[collection_limit] == 1){
+					motor[CollectionA] = 0;
+					motor[CollectionB] = 0;
+					wait1Msec(1000);
+					motor[CollectionA] = 127;
+					motor[CollectionB] = 127;
+					while(SensorValue[collection_limit] == 1){
+						motor[CollectionA] = 127;
+						motor[CollectionB] = 127;
+					}
+				} else {
+					motor[CollectionA] = 127;
+					motor[CollectionB] = 127;
+				}
+			} else {
 				motor[CollectionA] = 127;
 				motor[CollectionB] = 127;
 			}
-
-			}else if(vexRT[Btn6D] == 1){
+		}else if(vexRT[Btn6D] == 1){
 			motor[CollectionA] = -127;
 			motor[CollectionB] = -127;
-			}else{
+		}else{
 			motor[CollectionB] = 0;
 			if(vexRT[Btn5U] == 1){
 				motor[CollectionA] =  127;

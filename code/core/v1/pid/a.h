@@ -174,7 +174,7 @@ FwControlTask()
 	fw_controller *fw = &flywheel;
 
 	// Set the gain
-	fw->gain = 0.00035; //0.00025
+	fw->gain = 0.0005; //0.00025
 
 	// We are using Speed geared motors
 	// Set the encoder ticks per revolution

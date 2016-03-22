@@ -37,13 +37,13 @@ task usercontrol {
 			motorSpeed = 0;
 			FwVelocitySet( &flywheel, 0, motorSpeed);
 			}else if(vexRT[Btn7L] == 1){
-			FwMaxPower(127);
-			motorSpeed = 0.9;
-			FwVelocitySet( &flywheel, 1950, motorSpeed);
+			FwMaxPower(85);
+			motorSpeed = 0.85;
+			FwVelocitySet( &flywheel, 1780, motorSpeed);
 			}else if(vexRT[Btn7U] == 1){
-			FwMaxPower(90);
-			motorSpeed = 0.7;
-			FwVelocitySet( &flywheel, 1615, motorSpeed);
+			FwMaxPower(80);
+			motorSpeed = 0.75;
+			FwVelocitySet( &flywheel, 1650, motorSpeed);
 			}else if(vexRT[Btn8U] == 1) {
 			FwMaxPower(72);
 			FwGain(0.0005);
