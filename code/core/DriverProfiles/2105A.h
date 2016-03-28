@@ -1,5 +1,6 @@
 task usercontrol {
-	//int motorSpeed = 0;
+	char court;
+	int motorSpeed = 0;
 	int buttonToggleState = 0;
 	int buttonPressed = 0;
 	int drivemultiplier = 1;
@@ -47,20 +48,23 @@ task usercontrol {
 			driverSetRpm = 0;
 			FwVelocitySet( &flywheel, driverSetRpm, motorSpeed);
 			}else if(vexRT[Btn7D] == 1){
-			//FwSetGain(0.00025);
+			court = 'F';
 			FwMaxPower(127);
 			motorSpeed = 1;
 			driverSetRpm = 2450;
 			FwVelocitySet( &flywheel, driverSetRpm, motorSpeed);
 			}else if(vexRT[Btn7L] == 1){
+			court = 'M';
 			FwMaxPower(85);
 			motorSpeed = 0.65;
 			driverSetRpm = 1875;
 			FwVelocitySet( &flywheel, driverSetRpm, motorSpeed);
 			}else if(vexRT[Btn7U] == 1){
-			FwMaxPower(70);
-			motorSpeed = 0.8;
-			FwVelocitySet( &flywheel, 1650, motorSpeed);
+			court = 'C';
+			FwMaxPower(69);
+			motorSpeed = 0.9;
+			driverSetRpm = 1640;
+			FwVelocitySet( &flywheel, driverSetRpm, motorSpeed);
 			}else if(vexRT[Btn8U] == 1){
 			FwMaxPower(83);
 			motorSpeed = 0.9;
@@ -72,7 +76,9 @@ task usercontrol {
 		//			Collection
 		//----------------------
 		if(vexRT[Btn6U] == 1){
-			if(motorSpeed == 1){
+
+			switch(court){
+			case 'F':
 				if(SensorValue[collection_limit] == 1){
 					motor[CollectionA] = 0;
 					motor[CollectionB] = 0;
@@ -83,18 +89,37 @@ task usercontrol {
 						motor[CollectionA] = 127;
 						motor[CollectionB] = 127;
 					}
-				} else {
+					} else {
 					motor[CollectionA] = 127;
 					motor[CollectionB] = 127;
 				}
-			} else {
-				motor[CollectionA] = 127;
-				motor[CollectionB] = 127;
+				break;
+			case 'C':
+				if(SensorValue[collection_limit] == 1){
+					motor[CollectionA] = 0;
+					motor[CollectionB] = 0;
+					while(abs(returnError) >= 35){
+						motor[CollectionA] = 0;
+						motor[CollectionB] = 0;
+						wait1Msec(25);
+					}
+					motor[CollectionA] = 127;
+					motor[CollectionB] = 127;
+					while(SensorValue[collection_limit] == 1){
+						motor[CollectionA] = 127;
+						motor[CollectionB] = 127;
+					}
+					} else {
+					motor[CollectionA] = 127;
+					motor[CollectionB] = 127;
+				}
+				break;
 			}
-		}else if(vexRT[Btn6D] == 1){
+
+			}else if(vexRT[Btn6D] == 1){
 			motor[CollectionA] = -127;
 			motor[CollectionB] = -127;
-		}else{
+			}else{
 			motor[CollectionB] = 0;
 			if(vexRT[Btn5U] == 1){
 				motor[CollectionA] =  127;

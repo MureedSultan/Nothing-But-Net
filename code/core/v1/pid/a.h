@@ -6,6 +6,7 @@
 #define FW_MAX_POWER              75
 
 int MAX_POWER = 75;
+float returnError = 0;
 
 void FwMaxPower(int power = 127){
 	MAX_POWER = power;
@@ -40,6 +41,9 @@ typedef struct _fw_controller {
 	float           error;                  ///< error between actual and target velocities
 	float           last_error;             ///< error last time update called
 	float           gain;                   ///< gain
+	float           Ki;               ///< integral
+	float           integ;                  ///< integral
+	float           integLimit;             ///< integral limit
 	float           drive;                  ///< final drive out of TBH (0.0 to 1.0)
 	float           drive_at_zero;          ///< drive at last zero crossing
 	long            first_cross;            ///< flag indicating first zero crossing
@@ -137,9 +141,14 @@ FwControlUpdateVelocityTbh( fw_controller *fw )
 	// current is measured velocity
 	fw->error = fw->target - fw->current;
 
+	if(fw->Ki != 0 && abs(fw->error) < fw->integLimit){
+		fw->integ += fw->error;
+		}else{
+		fw->integ = 0;
+	}
 	// Use Kp as gain
+	//fw->drive =  fw->drive + (fw->error * fw->gain) + (fw->Ki * fw->integ);
 	fw->drive =  fw->drive + (fw->error * fw->gain);
-
 	// Clip - we are only going forwards
 	if( fw->drive > 1 )
 		fw->drive = 1;
@@ -163,6 +172,7 @@ FwControlUpdateVelocityTbh( fw_controller *fw )
 
 	// Save last error
 	fw->last_error = fw->error;
+	returnError = fw->error;
 }
 
 /*-----------------------------------------------------------------------------*/
@@ -174,11 +184,14 @@ FwControlTask()
 	fw_controller *fw = &flywheel;
 
 	// Set the gain
-	fw->gain = 0.0005; //0.00025
+	fw->gain = 0.00025; //0.00025
 
 	// We are using Speed geared motors
 	// Set the encoder ticks per revolution
 	fw->ticks_per_rev = MOTOR_TPR_393S;
+
+	fw->Ki = 0.0005;
+	fw->integLimit = 50;
 
 	while(1)
 	{
