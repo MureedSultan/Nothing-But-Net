@@ -6,16 +6,12 @@
 #define FW_MAX_POWER              75
 
 int MAX_POWER = 75;
+float returnError = 0;
 
 void FwMaxPower(int power = 127){
 	MAX_POWER = power;
 }
 
-float DEFAULT_GAIN = 0.00045;
-
-void FwGain(float gain = 0.00045){
-	DEFAULT_GAIN = gain;
-}
 
 // encoder counts per revolution depending on motor
 #define MOTOR_TPR_269           240.448
@@ -169,6 +165,7 @@ FwControlUpdateVelocityTbh( fw_controller *fw )
 
 	// Save last error
 	fw->last_error = fw->error;
+	returnError = fw->error;
 }
 
 /*-----------------------------------------------------------------------------*/
@@ -180,7 +177,7 @@ FwControlTask()
 	fw_controller *fw = &flywheel;
 
 	// Set the gain
-	fw->gain = DEFAULT_GAIN; //0.00025
+	fw->gain = 0.00025; //0.00025
 
 	// We are using Speed geared motors
 	// Set the encoder ticks per revolution

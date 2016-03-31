@@ -8,6 +8,7 @@ task usercontrol {
 	int deadband = 10;
 	int driverSetRpm = 0;
 	while(true){
+		SensorValue[dgtl12] = 1;
 		//----------------------
 		//			Drive
 		//----------------------
@@ -49,21 +50,21 @@ task usercontrol {
 			FwVelocitySet( &flywheel, driverSetRpm, motorSpeed);
 			}else if(vexRT[Btn7D] == 1){
 			court = 'F';
-			FwMaxPower(127);
+			FwMaxPower(110);
 			motorSpeed = 1;
-			driverSetRpm = 2450;
+			driverSetRpm = 2360;
 			FwVelocitySet( &flywheel, driverSetRpm, motorSpeed);
 			}else if(vexRT[Btn7L] == 1){
 			court = 'M';
-			FwMaxPower(85);
-			motorSpeed = 0.65;
-			driverSetRpm = 1875;
+			FwMaxPower(76);
+			motorSpeed = 0.5;
+			driverSetRpm = 1810;
 			FwVelocitySet( &flywheel, driverSetRpm, motorSpeed);
 			}else if(vexRT[Btn7U] == 1){
 			court = 'C';
-			FwMaxPower(69);
+			FwMaxPower(70);
 			motorSpeed = 0.9;
-			driverSetRpm = 1640;
+			driverSetRpm = 1620;
 			FwVelocitySet( &flywheel, driverSetRpm, motorSpeed);
 			}else if(vexRT[Btn8U] == 1){
 			FwMaxPower(83);
@@ -76,7 +77,6 @@ task usercontrol {
 		//			Collection
 		//----------------------
 		if(vexRT[Btn6U] == 1){
-
 			switch(court){
 			case 'F':
 				if(SensorValue[collection_limit] == 1){
@@ -94,26 +94,10 @@ task usercontrol {
 					motor[CollectionB] = 127;
 				}
 				break;
-			case 'C':
-				if(SensorValue[collection_limit] == 1){
-					motor[CollectionA] = 0;
-					motor[CollectionB] = 0;
-					while(abs(returnError) >= 35){
-						motor[CollectionA] = 0;
-						motor[CollectionB] = 0;
-						wait1Msec(25);
-					}
-					motor[CollectionA] = 127;
-					motor[CollectionB] = 127;
-					while(SensorValue[collection_limit] == 1){
-						motor[CollectionA] = 127;
-						motor[CollectionB] = 127;
-					}
-					} else {
-					motor[CollectionA] = 127;
-					motor[CollectionB] = 127;
-				}
-				break;
+
+			default:
+				motor[CollectionA] = 127;
+				motor[CollectionB] = 127;
 			}
 
 			}else if(vexRT[Btn6D] == 1){

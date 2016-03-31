@@ -1,4 +1,5 @@
 task usercontrol {
+	char court;
 	int dval = 0;
 	int deadband = 10;
 	int buttonToggleState = 0;
@@ -15,11 +16,11 @@ task usercontrol {
 		motor[DriveLeft]  = dval < deadband && dval > -deadband ? 0 : dval;
 		*/
 
-		dval = (vexRT[Ch2] - vexRT[Ch1]);
+		dval = (-vexRT[Ch2] + vexRT[Ch1]);
 		motor[DriveFrontRight]  = dval < deadband && dval > -deadband ? 0 : dval;
 		dval = (vexRT[Ch2] + vexRT[Ch1]);
 		motor[DriveFrontLeft]  = dval < deadband && dval > -deadband ? 0 : dval;
-		dval = (vexRT[Ch2] - vexRT[Ch1]);
+		dval = (-vexRT[Ch2] + vexRT[Ch1]);
 		motor[DriveRearRight]  = dval < deadband && dval > -deadband ? 0 : dval;
 		dval = (vexRT[Ch2] + vexRT[Ch1]);
 		motor[DriveRearLeft]  = dval < deadband && dval > -deadband ? 0 : dval;
@@ -29,26 +30,28 @@ task usercontrol {
 		//----------------------
 
 		if(vexRT[Btn7D] == 1){
-			//FwSetGain(0.00025);
 			FwMaxPower(127);
 			motorSpeed = 1;
 			FwVelocitySet(&flywheel, 2380, 1);
+			court = 'F';
 			}else if(vexRT[Btn7R] == 1){
 			motorSpeed = 0;
 			FwVelocitySet( &flywheel, 0, motorSpeed);
 			}else if(vexRT[Btn7L] == 1){
-			FwMaxPower(85);
-			motorSpeed = 0.85;
-			FwVelocitySet( &flywheel, 1780, motorSpeed);
+			FwMaxPower(84);
+			motorSpeed = 0.9;
+			FwVelocitySet( &flywheel, 1800, motorSpeed);
+			court = 'M';
 			}else if(vexRT[Btn7U] == 1){
-			FwMaxPower(80);
-			motorSpeed = 0.75;
-			FwVelocitySet( &flywheel, 1650, motorSpeed);
+			FwMaxPower(78);
+			motorSpeed = 0.6;
+			FwVelocitySet( &flywheel, 1590, motorSpeed);
+			court = 'C';
 			}else if(vexRT[Btn8U] == 1) {
 			FwMaxPower(72);
-			FwGain(0.0005);
-			motorSpeed = 0.5;
+			motorSpeed = 0.6;
 			FwVelocitySet( &flywheel, 1870, motorSpeed);
+			court = 'S';
 		}
 
 		if(vexRT[Btn8R] == 1){
@@ -86,8 +89,17 @@ task usercontrol {
 		//			Collection
 		//----------------------
 		if(vexRT[Btn6U] == 1){
-			motor[CollectionA] = 127;
-			motor[CollectionB] = 127;
+
+			switch(court){
+			case 'S':
+				motor[CollectionA] = 127;
+				motor[CollectionB] = 127 * 0.7;
+				break;
+			default:
+				motor[CollectionA] = 127;
+				motor[CollectionB] = 127;
+			}
+
 			}else if(vexRT[Btn6D] == 1){
 			motor[CollectionA] = -127;
 			motor[CollectionB] = -127;
@@ -115,12 +127,10 @@ task usercontrol {
 		}
 
 		if(vexRT[Btn8L] == 1){
-			SensorValue[pnu_bar1] = 1;
 			SensorValue[pnu_bar2] = 1;
 			SensorValue[pnu_lift1] = 1;
 			SensorValue[pnu_lift2] = 1;
 			} else {
-			SensorValue[pnu_bar1] = 0;
 			SensorValue[pnu_bar2] = 0;
 			SensorValue[pnu_lift1] = 0;
 			SensorValue[pnu_lift2] = 0;

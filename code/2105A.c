@@ -2,6 +2,7 @@
 #pragma config(Sensor, in2,    Gyroscope,      sensorGyro)
 #pragma config(Sensor, dgtl1,  enc,            sensorQuadEncoder)
 #pragma config(Sensor, dgtl3,  collection_limit, sensorTouch)
+#pragma config(Sensor, dgtl12, leds,           sensorLEDtoVCC)
 #pragma config(Sensor, I2C_1,  DriveEncoderRight, sensorQuadEncoderOnI2CPort,    , AutoAssign )
 #pragma config(Sensor, I2C_2,  DriveEncoder,   sensorQuadEncoderOnI2CPort,    , AutoAssign )
 #pragma config(Motor,  port1,           CollectionB,   tmotorVex393_HBridge, openLoop, reversed)
@@ -22,7 +23,6 @@
 #define OneLiftEncoder
 #define HasGyro
 #define NoPowerExpander
-//#define MultiDriveEncoders.
 #if defined(_DEBUG)
 const string FILE = __FILE__;
 #endif

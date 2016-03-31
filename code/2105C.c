@@ -30,7 +30,7 @@
 #define NoLiftLimits
 #define OneLiftEncoder
 #define HasGyro
-//#define MultiDriveEncoders.
+//#define MultiDriveEncoders
 #if defined(_DEBUG)
 const string FILE = __FILE__;
 #endif
