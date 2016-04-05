@@ -30,27 +30,31 @@ task usercontrol {
 		//----------------------
 
 		if(vexRT[Btn7D] == 1){
+			FwSetGain(0.05);
 			FwMaxPower(127);
 			motorSpeed = 1;
-			FwVelocitySet(&flywheel, 2380, 1);
+			FwVelocitySet(&flywheel, 2400, 1);
 			court = 'F';
 			}else if(vexRT[Btn7R] == 1){
 			motorSpeed = 0;
 			FwVelocitySet( &flywheel, 0, motorSpeed);
 			}else if(vexRT[Btn7L] == 1){
+			FwSetGain(0.005);
 			FwMaxPower(84);
 			motorSpeed = 0.9;
 			FwVelocitySet( &flywheel, 1800, motorSpeed);
 			court = 'M';
 			}else if(vexRT[Btn7U] == 1){
-			FwMaxPower(78);
-			motorSpeed = 0.6;
-			FwVelocitySet( &flywheel, 1590, motorSpeed);
+			FwSetGain(0.05);
+			FwMaxPower(110);
+			motorSpeed = 0.236;
+			FwVelocitySet( &flywheel, 1580, motorSpeed);
 			court = 'C';
 			}else if(vexRT[Btn8U] == 1) {
-			FwMaxPower(72);
+			FwSetGain(0.005);
+			FwMaxPower(118);
 			motorSpeed = 0.6;
-			FwVelocitySet( &flywheel, 1870, motorSpeed);
+			FwVelocitySet( &flywheel, 1890, motorSpeed);
 			court = 'S';
 		}
 
@@ -93,7 +97,7 @@ task usercontrol {
 			switch(court){
 			case 'S':
 				motor[CollectionA] = 127;
-				motor[CollectionB] = 127 * 0.7;
+				motor[CollectionB] = 127;
 				break;
 			default:
 				motor[CollectionA] = 127;
